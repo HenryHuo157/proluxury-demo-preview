@@ -1,14 +1,20 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useLang, dict } from '../i18n.jsx'
 import { findCat, productsOfCat, catName } from '../lib/data.js'
 import { href } from '../router.jsx'
 import ProductCard from '../components/ProductCard.jsx'
+import FilterPanel, { applyFacets } from '../components/FilterPanel.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
 
 export default function CategoryPage({ code }) {
   const { lang } = useLang()
   const t = dict[lang]
   const found = findCat(code)
+  const [facets, setFacets] = useState({})
+
+  useEffect(() => {
+    setFacets({})
+  }, [code])
 
   useEffect(() => {
     if (found) document.title = `${catName(found.cat, lang)} | Proluxury 普樂氏`
@@ -18,9 +24,10 @@ export default function CategoryPage({ code }) {
 
   const { cat, group } = found
   const isGroup = cat === group
-  const list = productsOfCat(code).sort(
+  const all = productsOfCat(code).sort(
     (a, b) => b.images.length - a.images.length || a.sku.localeCompare(b.sku)
   )
+  const list = applyFacets(all, facets)
 
   return (
     <div className="page">
@@ -50,6 +57,8 @@ export default function CategoryPage({ code }) {
             ))}
           </div>
         )}
+
+        <FilterPanel list={all} selected={facets} onChange={setFacets} />
 
         {list.length ? (
           <div className="pgrid">

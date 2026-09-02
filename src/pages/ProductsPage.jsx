@@ -3,6 +3,7 @@ import { useLang, dict } from '../i18n.jsx'
 import { products, categories, catName } from '../lib/data.js'
 import { href } from '../router.jsx'
 import ProductCard from '../components/ProductCard.jsx'
+import FilterPanel, { applyFacets } from '../components/FilterPanel.jsx'
 import { IconSearch } from '../components/Icons.jsx'
 
 export default function ProductsPage() {
@@ -10,12 +11,17 @@ export default function ProductsPage() {
   const t = dict[lang]
   const [group, setGroup] = useState('')
   const [q, setQ] = useState('')
+  const [facets, setFacets] = useState({})
 
   useEffect(() => {
     document.title = `${t.pageAllProducts} | Proluxury 普樂氏`
   }, [t.pageAllProducts])
 
-  const list = useMemo(() => {
+  useEffect(() => {
+    setFacets({})
+  }, [group])
+
+  const base = useMemo(() => {
     const kw = q.trim().toLowerCase()
     return products.filter((p) => {
       if (group && !p.catCode.startsWith(group)) return false
@@ -30,6 +36,8 @@ export default function ProductsPage() {
       return true
     })
   }, [group, q])
+
+  const list = useMemo(() => applyFacets(base, facets), [base, facets])
 
   return (
     <div className="page">
@@ -74,6 +82,8 @@ export default function ProductsPage() {
             />
           </div>
         </div>
+
+        <FilterPanel list={base} selected={facets} onChange={setFacets} />
 
         <p className="shop-count">
           {list.length} {t.itemsUnit}

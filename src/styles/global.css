@@ -1123,6 +1123,40 @@ h1, h2, h3, h4, p { margin: 0; }
 
 .shop-count { font-size: 13px; color: var(--c-gray); margin-bottom: 18px; }
 
+.filter-panel {
+  display: grid;
+  gap: 14px 28px;
+  padding: 18px 22px;
+  margin-bottom: 22px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-lg);
+  background: var(--c-bg-soft);
+}
+.fp-head { display: flex; align-items: center; justify-content: space-between; }
+.fp-head strong { font-size: 14.5px; color: var(--c-primary); }
+.fp-reset {
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: var(--c-accent);
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.fp-reset:hover { text-decoration: underline; }
+.fp-group {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 8px 18px;
+  align-items: start;
+}
+.fp-label { font-size: 13.5px; font-weight: 600; color: var(--c-primary); padding-top: 7px; }
+.fp-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (max-width: 640px) {
+  .fp-group { grid-template-columns: 1fr; gap: 8px; }
+  .fp-label { padding-top: 0; }
+}
+
 .pgrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(226px, 1fr));
