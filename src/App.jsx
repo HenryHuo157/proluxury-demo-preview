@@ -1,42 +1,42 @@
 import Header from './components/Header.jsx'
-import HeroCarousel from './components/HeroCarousel.jsx'
-import CategoryTiles from './components/CategoryTiles.jsx'
-import FeaturedBlocks from './components/FeaturedBlocks.jsx'
-import ProductRow from './components/ProductRow.jsx'
-import BrandStory from './components/BrandStory.jsx'
 import Footer from './components/Footer.jsx'
-import { useLang, dict } from './i18n.jsx'
-import { topOfCat } from './lib/data.js'
+import { useRoute } from './router.jsx'
+import Home from './pages/Home.jsx'
+import ProductsPage from './pages/ProductsPage.jsx'
+import CategoryPage from './pages/CategoryPage.jsx'
+import ProductPage from './pages/ProductPage.jsx'
+import BrandPage from './pages/BrandPage.jsx'
+import ContactPage from './pages/ContactPage.jsx'
+import InfoPage from './pages/InfoPage.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx'
 
 export default function App() {
-  const { lang } = useLang()
-  const t = dict[lang]
-  const summerItems = topOfCat('ED01', 8)
-  const winterItems = topOfCat('ED02', 8)
+  const parts = useRoute()
+  const [root, param] = parts
+
+  let page
+  if (!root) {
+    page = <Home />
+  } else if (root === 'products') {
+    page = <ProductsPage />
+  } else if (root === 'category') {
+    page = <CategoryPage code={param || ''} />
+  } else if (root === 'product') {
+    page = <ProductPage sku={param || ''} />
+  } else if (root === 'brand') {
+    page = <BrandPage />
+  } else if (root === 'contact') {
+    page = <ContactPage />
+  } else if (root === 'info') {
+    page = <InfoPage slug={param || ''} />
+  } else {
+    page = <NotFoundPage />
+  }
 
   return (
     <div className="site" id="top">
       <Header />
-      <main>
-        <HeroCarousel />
-        <CategoryTiles />
-        <FeaturedBlocks />
-        <ProductRow
-          id="summer"
-          kicker={t.summerKicker}
-          title={t.summerTitle}
-          sub={t.summerSub}
-          items={summerItems}
-        />
-        <ProductRow
-          id="winter"
-          kicker={t.winterKicker}
-          title={t.winterTitle}
-          sub={t.winterSub}
-          items={winterItems}
-        />
-        <BrandStory />
-      </main>
+      <main>{page}</main>
       <Footer />
     </div>
   )

@@ -15,7 +15,7 @@ export default function CategoryTiles() {
             g.subs.map((s) => {
               const rep = heroProductOfCat(s.code)
               return (
-                <a className="tile" href="#categories" key={s.code}>
+                <a className="tile" href={`#/category/${s.code}`} key={s.code}>
                   <div className="tile-img">
                     <LazyImage src={rep ? mainImg(rep) : ''} alt={catName(s, lang)} />
                   </div>

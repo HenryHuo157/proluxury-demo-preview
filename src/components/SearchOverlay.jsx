@@ -73,11 +73,13 @@ export default function SearchOverlay({ open, onClose }) {
           <ul className="search-results">
             {results.map((p) => (
               <li key={p.sku}>
-                <LazyImage src={mainImg(p)} alt={p.nameZh} />
-                <div className="sr-info">
-                  <strong>{productName(p, lang)}</strong>
-                  <span>{p.sku}</span>
-                </div>
+                <a className="sr-link" href={`#/product/${p.sku}`} onClick={onClose}>
+                  <LazyImage src={mainImg(p)} alt={p.nameZh} />
+                  <div className="sr-info">
+                    <strong>{productName(p, lang)}</strong>
+                    <span>{p.sku}</span>
+                  </div>
+                </a>
               </li>
             ))}
           </ul>

@@ -5,6 +5,8 @@ import {
   IconPhone, IconMail, IconPin, IconFacebook, IconInstagram, IconYoutube, IconWhatsapp,
 } from './Icons.jsx'
 
+const SERVICE_HREFS = ['/contact', '/info/delivery', '/info/returns', '/info/warranty', '/info/faq']
+
 export default function Footer() {
   const { lang } = useLang()
   const t = dict[lang]
@@ -17,10 +19,10 @@ export default function Footer() {
           </span>
           <p>{t.footerAbout}</p>
           <div className="footer-social">
-            <a href="#top" aria-label="Facebook"><IconFacebook /></a>
-            <a href="#top" aria-label="Instagram"><IconInstagram /></a>
-            <a href="#top" aria-label="YouTube"><IconYoutube /></a>
-            <a href="#top" aria-label="WhatsApp"><IconWhatsapp /></a>
+            <a href="#/" aria-label="Facebook"><IconFacebook /></a>
+            <a href="#/" aria-label="Instagram"><IconInstagram /></a>
+            <a href="#/" aria-label="YouTube"><IconYoutube /></a>
+            <a href="#/" aria-label="WhatsApp"><IconWhatsapp /></a>
           </div>
         </div>
 
@@ -29,7 +31,7 @@ export default function Footer() {
           <ul>
             {categories.map((g) => (
               <li key={g.code}>
-                <a href="#categories">{catName(g, lang)}</a>
+                <a href={`#/category/${g.code}`}>{catName(g, lang)}</a>
               </li>
             ))}
           </ul>
@@ -38,8 +40,10 @@ export default function Footer() {
         <div className="footer-col">
           <h4>{t.footerServiceTitle}</h4>
           <ul>
-            {t.footerServiceLinks.map((s) => (
-              <li key={s}><a href="#top">{s}</a></li>
+            {t.footerServiceLinks.map((s, i) => (
+              <li key={s}>
+                <a href={`#${SERVICE_HREFS[i] || '/contact'}`}>{s}</a>
+              </li>
             ))}
           </ul>
         </div>

@@ -5,7 +5,7 @@ import ProductCard from './ProductCard.jsx'
 import { IconChevronLeft, IconChevronRight, IconArrowRight } from './Icons.jsx'
 
 /** 橫向滾動商品列（季節推介） */
-export default function ProductRow({ id, kicker, title, sub, items }) {
+export default function ProductRow({ id, kicker, title, sub, items, moreHref }) {
   const { lang } = useLang()
   const t = dict[lang]
   const trackRef = useRef(null)
@@ -23,7 +23,7 @@ export default function ProductRow({ id, kicker, title, sub, items }) {
         <div className="prow-head">
           <SectionHead kicker={kicker} title={title} sub={sub} />
           <div className="prow-actions">
-            <a className="link-more" href="#categories">
+            <a className="link-more" href={moreHref ? `#${moreHref}` : '#/products'}>
               {t.viewAll} <IconArrowRight size={15} />
             </a>
             <div className="prow-arrows">

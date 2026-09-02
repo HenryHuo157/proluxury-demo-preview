@@ -31,3 +31,25 @@ export const topOfCat = (code, n = 8) =>
   withImages(byCat(code))
     .sort((a, b) => b.images.length - a.images.length || a.sku.localeCompare(b.sku))
     .slice(0, n)
+
+/** 依代碼找分類（可為大組 EA 或子分類 EA01），回傳 { cat, group } 或 null */
+export const findCat = (code) => {
+  for (const g of categories) {
+    if (g.code === code) return { cat: g, group: g }
+    const s = g.subs.find((x) => x.code === code)
+    if (s) return { cat: s, group: g }
+  }
+  return null
+}
+
+/** 分類下全部商品：子分類精確匹配，大組以代碼為前綴 */
+export const productsOfCat = (code) =>
+  code.length === 2
+    ? products.filter((p) => p.catCode.startsWith(code))
+    : byCat(code)
+
+/** 相關商品：同子分類、有圖、按圖片數排序 */
+export const relatedOf = (sku, catCode, n = 8) =>
+  withImages(products.filter((p) => p.catCode === catCode && p.sku !== sku))
+    .sort((a, b) => b.images.length - a.images.length || a.sku.localeCompare(b.sku))
+    .slice(0, n)

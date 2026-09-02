@@ -46,7 +46,7 @@ export default function HeroCarousel() {
               <h1 className="hero-slogan">{s.slogan}</h1>
               <h2 className="hero-title">{lang === 'en' ? s.titleEn : s.titleZh}</h2>
               <p className="hero-sub">{lang === 'en' ? s.subEn : s.subZh}</p>
-              <a className="btn btn-light" href="#featured">
+              <a className="btn btn-light" href={`#/product/${s.sku}`}>
                 {t.heroCta}
                 <IconChevronRight size={16} />
               </a>

@@ -27,7 +27,7 @@ export default function BrandStory() {
             </div>
           ))}
         </div>
-        <a className="btn btn-light brand-cta" href="#categories">
+        <a className="btn btn-light brand-cta" href="#/brand">
           {t.brandCta}
           <IconChevronRight size={15} />
         </a>

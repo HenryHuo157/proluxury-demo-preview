@@ -12,7 +12,7 @@ export default function ProductCard({ product }) {
   const t = dict[lang]
   const sub = subByCode[product.catCode]
   return (
-    <a className="pcard" href="#categories">
+    <a className="pcard" href={`#/product/${product.sku}`}>
       <div className="pcard-img">
         <LazyImage src={mainImg(product)} alt={product.nameZh} />
         {sub && <span className="pcard-cat">{catName(sub, lang)}</span>}

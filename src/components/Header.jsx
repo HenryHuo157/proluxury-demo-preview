@@ -11,7 +11,7 @@ import SearchOverlay from './SearchOverlay.jsx'
 
 function Logo({ compact = false }) {
   return (
-    <a className="logo" href="#top" aria-label="Proluxury 普樂氏">
+    <a className="logo" href="#/" aria-label="Proluxury 普樂氏">
       <img
         className={`logo-img ${compact ? 'logo-img-compact' : ''}`}
         src={logoImg}
@@ -29,7 +29,10 @@ function MegaMenu() {
   return (
     <div className="mega" role="navigation">
       <div className="mega-inner container">
-        <a className="mega-promo" href="#featured">
+        <a
+          className="mega-promo"
+          href={promoProduct ? `#/product/${promoProduct.sku}` : '#/products'}
+        >
           <span className="mega-promo-slogan">{promo.slogan}</span>
           <LazyImage src={promoProduct ? mainImg(promoProduct) : ''} alt={promoProduct?.nameZh || ''} />
           <span className="mega-promo-name">
@@ -42,11 +45,11 @@ function MegaMenu() {
         <div className="mega-cols">
           {categories.map((g) => (
             <div className="mega-col" key={g.code}>
-              <a className="mega-group" href="#categories">
+              <a className="mega-group" href={`#/category/${g.code}`}>
                 {catName(g, lang)}
               </a>
               {g.subs.map((s) => (
-                <a key={s.code} className="mega-sub" href="#categories">
+                <a key={s.code} className="mega-sub" href={`#/category/${s.code}`}>
                   {catName(s, lang)}
                   <em>{s.count}</em>
                 </a>
@@ -87,7 +90,7 @@ function MobileDrawer({ open, onClose }) {
               {openGroup === g.code && (
                 <div className="drawer-subs">
                   {g.subs.map((s) => (
-                    <a key={s.code} href="#categories" onClick={onClose}>
+                    <a key={s.code} href={`#/category/${s.code}`} onClick={onClose}>
                       {catName(s, lang)} <em>{s.count}</em>
                     </a>
                   ))}
@@ -95,9 +98,10 @@ function MobileDrawer({ open, onClose }) {
               )}
             </div>
           ))}
-          <a className="drawer-link" href="#summer" onClick={onClose}>{t.navSummer}</a>
-          <a className="drawer-link" href="#winter" onClick={onClose}>{t.navWinter}</a>
-          <a className="drawer-link" href="#brand" onClick={onClose}>{t.navBrand}</a>
+          <a className="drawer-link" href="#/products" onClick={onClose}>{t.navAllProducts}</a>
+          <a className="drawer-link" href="#/category/ED01" onClick={onClose}>{t.navSummer}</a>
+          <a className="drawer-link" href="#/category/ED02" onClick={onClose}>{t.navWinter}</a>
+          <a className="drawer-link" href="#/brand" onClick={onClose}>{t.navBrand}</a>
         </nav>
       </div>
     </div>
@@ -154,9 +158,9 @@ export default function Header() {
                 <IconChevronDown size={15} />
               </button>
             </div>
-            <a className="nav-link" href="#summer">{t.navSummer}</a>
-            <a className="nav-link" href="#winter">{t.navWinter}</a>
-            <a className="nav-link" href="#brand">{t.navBrand}</a>
+            <a className="nav-link" href="#/category/ED01">{t.navSummer}</a>
+            <a className="nav-link" href="#/category/ED02">{t.navWinter}</a>
+            <a className="nav-link" href="#/brand">{t.navBrand}</a>
           </nav>
 
           <div className="header-tools">
