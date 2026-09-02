@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLang, dict } from '../i18n.jsx'
-import { products, categories, catName, withImages } from '../lib/data.js'
+import { products, categories, catName } from '../lib/data.js'
 import { href } from '../router.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import { IconSearch } from '../components/Icons.jsx'
@@ -17,7 +17,7 @@ export default function ProductsPage() {
 
   const list = useMemo(() => {
     const kw = q.trim().toLowerCase()
-    return withImages(products).filter((p) => {
+    return products.filter((p) => {
       if (group && !p.catCode.startsWith(group)) return false
       if (
         kw &&

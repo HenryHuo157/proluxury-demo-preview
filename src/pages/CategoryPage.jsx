@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLang, dict } from '../i18n.jsx'
-import { findCat, productsOfCat, catName, withImages } from '../lib/data.js'
+import { findCat, productsOfCat, catName } from '../lib/data.js'
 import { href } from '../router.jsx'
 import ProductCard from '../components/ProductCard.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
@@ -18,7 +18,7 @@ export default function CategoryPage({ code }) {
 
   const { cat, group } = found
   const isGroup = cat === group
-  const list = withImages(productsOfCat(code)).sort(
+  const list = productsOfCat(code).sort(
     (a, b) => b.images.length - a.images.length || a.sku.localeCompare(b.sku)
   )
 
