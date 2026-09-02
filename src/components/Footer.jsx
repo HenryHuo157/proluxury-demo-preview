@@ -1,5 +1,6 @@
 import { useLang, dict } from '../i18n.jsx'
 import { categories, catName } from '../lib/data.js'
+import logoImg from '../Logo/Logo2.png'
 import {
   IconPhone, IconMail, IconPin, IconFacebook, IconInstagram, IconYoutube, IconWhatsapp,
 } from './Icons.jsx'
@@ -11,7 +12,9 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container footer-grid">
         <div className="footer-col about">
-          <span className="footer-logo">PROLUXURY<span className="logo-dot" /></span>
+          <span className="footer-logo">
+            <img src={logoImg} alt="Proluxury 普樂氏" />
+          </span>
           <p>{t.footerAbout}</p>
           <div className="footer-social">
             <a href="#top" aria-label="Facebook"><IconFacebook /></a>

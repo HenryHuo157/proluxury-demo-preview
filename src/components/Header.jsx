@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLang, dict } from '../i18n.jsx'
 import { categories, catName, heroProductOfCat, mainImg } from '../lib/data.js'
 import { HERO_SLIDES } from '../lib/home.js'
+import logoImg from '../Logo/Logo2.png'
 import {
   IconMenu, IconClose, IconSearch, IconChevronDown, IconArrowRight,
 } from './Icons.jsx'
@@ -10,10 +11,12 @@ import SearchOverlay from './SearchOverlay.jsx'
 
 function Logo({ compact = false }) {
   return (
-    <a className="logo" href="#top" aria-label="Proluxury">
-      <span className="logo-word">PROLUXURY</span>
-      {!compact && <span className="logo-zh">普樂氏</span>}
-      <span className="logo-dot" aria-hidden="true" />
+    <a className="logo" href="#top" aria-label="Proluxury 普樂氏">
+      <img
+        className={`logo-img ${compact ? 'logo-img-compact' : ''}`}
+        src={logoImg}
+        alt="Proluxury 普樂氏"
+      />
     </a>
   )
 }
