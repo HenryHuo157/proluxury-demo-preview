@@ -21,7 +21,7 @@ function Logo({ compact = false }) {
   )
 }
 
-function MegaMenu() {
+function MegaMenu({ onNavigate }) {
   const { lang } = useLang()
   const t = dict[lang]
   const promoProduct = heroProductOfCat('EA06') // 智能空氣炸鍋
@@ -32,6 +32,7 @@ function MegaMenu() {
         <a
           className="mega-promo"
           href={promoProduct ? `#/product/${promoProduct.sku}` : '#/products'}
+          onClick={onNavigate}
         >
           <span className="mega-promo-slogan">{promo.slogan}</span>
           <LazyImage src={promoProduct ? mainImg(promoProduct) : ''} alt={promoProduct?.nameZh || ''} />
@@ -45,11 +46,11 @@ function MegaMenu() {
         <div className="mega-cols">
           {categories.map((g) => (
             <div className="mega-col" key={g.code}>
-              <a className="mega-group" href={`#/category/${g.code}`}>
+              <a className="mega-group" href={`#/category/${g.code}`} onClick={onNavigate}>
                 {catName(g, lang)}
               </a>
               {g.subs.map((s) => (
-                <a key={s.code} className="mega-sub" href={`#/category/${s.code}`}>
+                <a key={s.code} className="mega-sub" href={`#/category/${s.code}`} onClick={onNavigate}>
                   {catName(s, lang)}
                   <em>{s.count}</em>
                 </a>
@@ -125,7 +126,8 @@ export default function Header() {
   }, [])
 
   const openMega = () => { clearTimeout(megaTimer.current); setMegaOpen(true) }
-  const closeMega = () => { megaTimer.current = setTimeout(() => setMegaOpen(false), 120) }
+  const closeMega = () => { megaTimer.current = setTimeout(() => setMegaOpen(false), 250) }
+  const closeMegaNow = () => { clearTimeout(megaTimer.current); setMegaOpen(false) }
 
   return (
     <>
@@ -135,7 +137,7 @@ export default function Header() {
         </div>
       </div>
 
-      <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
+      <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`} onMouseLeave={closeMega}>
         <div className="container header-main">
           <button
             className="icon-btn burger"
@@ -151,16 +153,15 @@ export default function Header() {
             <div
               className={`nav-item has-mega ${megaOpen ? 'open' : ''}`}
               onMouseEnter={openMega}
-              onMouseLeave={closeMega}
             >
               <button className="nav-link" aria-expanded={megaOpen}>
                 {t.navProducts}
                 <IconChevronDown size={15} />
               </button>
             </div>
-            <a className="nav-link" href="#/category/ED01">{t.navSummer}</a>
-            <a className="nav-link" href="#/category/ED02">{t.navWinter}</a>
-            <a className="nav-link" href="#/brand">{t.navBrand}</a>
+            <a className="nav-link" href="#/category/ED01" onClick={closeMegaNow}>{t.navSummer}</a>
+            <a className="nav-link" href="#/category/ED02" onClick={closeMegaNow}>{t.navWinter}</a>
+            <a className="nav-link" href="#/brand" onClick={closeMegaNow}>{t.navBrand}</a>
           </nav>
 
           <div className="header-tools">
@@ -177,7 +178,7 @@ export default function Header() {
           </div>
         </div>
 
-        {megaOpen && <MegaMenu />}
+        {megaOpen && <MegaMenu onNavigate={closeMegaNow} />}
       </header>
 
       <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />

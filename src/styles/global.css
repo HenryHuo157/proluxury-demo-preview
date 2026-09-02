@@ -1123,39 +1123,143 @@ h1, h2, h3, h4, p { margin: 0; }
 
 .shop-count { font-size: 13px; color: var(--c-gray); margin-bottom: 18px; }
 
-.filter-panel {
-  display: grid;
-  gap: 14px 28px;
-  padding: 18px 22px;
-  margin-bottom: 22px;
+.fb-wrap { margin-bottom: 22px; }
+.fb-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 6px;
   border: 1px solid var(--c-line);
-  border-radius: var(--radius-lg);
-  background: var(--c-bg-soft);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px -22px rgba(15, 23, 42, 0.25);
 }
-.fp-head { display: flex; align-items: center; justify-content: space-between; }
-.fp-head strong { font-size: 14.5px; color: var(--c-primary); }
-.fp-reset {
+.fb-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  padding: 0 12px 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-primary);
+}
+.fb-dd { position: relative; }
+.fb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--c-primary);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+.fb-btn:hover { background: var(--c-bg-soft); }
+.fb-btn b {
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--c-primary);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.fb-btn.active { background: rgba(14, 42, 71, 0.08); font-weight: 600; }
+.fb-caret { color: var(--c-gray); transition: transform 0.2s ease; }
+.fb-dd.open .fb-caret { transform: rotate(180deg); }
+.fb-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 40;
+  width: 300px;
+  max-width: calc(100vw - 48px);
+  max-height: 320px;
+  overflow: auto;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid var(--c-line);
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 20px 48px -12px rgba(15, 23, 42, 0.22);
+}
+.fb-dd:last-of-type .fb-menu { left: auto; right: 0; }
+.fb-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13.5px;
+  color: var(--c-primary);
+}
+.fb-opt:hover { background: var(--c-bg-soft); }
+.fb-opt input {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  accent-color: var(--c-primary);
+  cursor: pointer;
+}
+.fb-opt span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fb-opt em { font-style: normal; font-size: 12px; color: var(--c-gray); }
+.fb-opt.checked { background: rgba(14, 42, 71, 0.06); }
+.fb-clear {
+  flex: none;
+  margin-left: auto;
   border: none;
   background: none;
   font: inherit;
   font-size: 13px;
+  font-weight: 600;
   color: var(--c-accent);
+  padding: 8px 12px;
+  border-radius: 10px;
   cursor: pointer;
-  padding: 2px 4px;
+  white-space: nowrap;
+  transition: background 0.15s ease;
 }
-.fp-reset:hover { text-decoration: underline; }
-.fp-group {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 8px 18px;
-  align-items: start;
+.fb-clear:hover { background: rgba(216, 35, 42, 0.08); }
+.fb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
 }
-.fp-label { font-size: 13.5px; font-weight: 600; color: var(--c-primary); padding-top: 7px; }
-.fp-opts { display: flex; flex-wrap: wrap; gap: 8px; }
-@media (max-width: 640px) {
-  .fp-group { grid-template-columns: 1fr; gap: 8px; }
-  .fp-label { padding-top: 0; }
+.fb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--c-line);
+  background: #fff;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--c-primary);
+  padding: 6px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
+.fb-chip:hover { border-color: var(--c-accent); color: var(--c-accent); }
+.fb-chip small { color: var(--c-gray); font-size: 11.5px; }
+.fb-chip:hover small { color: var(--c-accent); }
 
 .pgrid {
   display: grid;

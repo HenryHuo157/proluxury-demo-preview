@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLang, dict } from '../i18n.jsx'
 
 const PLACEHOLDER = new Set(['未指定', '不適用', '不适用', '未標明', '無特別功能', '—'])
@@ -17,6 +17,8 @@ export function applyFacets(list, selected) {
 export default function FilterPanel({ list, selected, onChange }) {
   const { lang } = useLang()
   const t = dict[lang]
+  const rootRef = useRef(null)
+  const [openK, setOpenK] = useState(null)
 
   const facets = useMemo(() => {
     const groups = new Map()
@@ -43,6 +45,22 @@ export default function FilterPanel({ list, selected, onChange }) {
       .slice(0, MAX_GROUPS)
   }, [list])
 
+  useEffect(() => {
+    if (!openK) return
+    const onDown = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) setOpenK(null)
+    }
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpenK(null)
+    }
+    document.addEventListener('pointerdown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [openK])
+
   if (!facets.length) return null
 
   const toggle = (k, v) => {
@@ -58,31 +76,105 @@ export default function FilterPanel({ list, selected, onChange }) {
   const activeCount = Object.values(selected).reduce((n, s) => n + s.length, 0)
 
   return (
-    <div className="filter-panel">
-      <div className="fp-head">
-        <strong>{t.filterTitle}</strong>
+    <div className="fb-wrap" ref={rootRef}>
+      <div className="fb-bar">
+        <span className="fb-title">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            <path d="M4 7h9M17 7h3M4 17h3M11 17h9" />
+            <circle cx="15" cy="7" r="2" />
+            <circle cx="9" cy="17" r="2" />
+          </svg>
+          {t.filterTitle}
+        </span>
+        {facets.map((f) => {
+          const sel = selected[f.k] || []
+          const isOpen = openK === f.k
+          return (
+            <div className={`fb-dd ${isOpen ? 'open' : ''}`} key={f.k}>
+              <button
+                type="button"
+                className={`fb-btn ${sel.length ? 'active' : ''}`}
+                aria-expanded={isOpen}
+                onClick={() => setOpenK(isOpen ? null : f.k)}
+              >
+                {f.k}
+                {sel.length > 0 && <b>{sel.length}</b>}
+                <svg
+                  className="fb-caret"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+              {isOpen && (
+                <div className="fb-menu">
+                  {f.options.map(([v, n]) => {
+                    const checked = sel.includes(v)
+                    return (
+                      <label className={`fb-opt ${checked ? 'checked' : ''}`} key={v}>
+                        <input type="checkbox" checked={checked} onChange={() => toggle(f.k, v)} />
+                        <span>{v}</span>
+                        <em>{n}</em>
+                      </label>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )
+        })}
         {activeCount > 0 && (
-          <button className="fp-reset" onClick={() => onChange({})}>
+          <button type="button" className="fb-clear" onClick={() => onChange({})}>
             {t.filterReset}
           </button>
         )}
       </div>
-      {facets.map((f) => (
-        <div className="fp-group" key={f.k}>
-          <span className="fp-label">{f.k}</span>
-          <div className="fp-opts">
-            {f.options.map(([v, n]) => (
+      {activeCount > 0 && (
+        <div className="fb-chips">
+          {Object.entries(selected).map(([k, vals]) =>
+            vals.map((v) => (
               <button
-                key={v}
-                className={`chip ${(selected[f.k] || []).includes(v) ? 'active' : ''}`}
-                onClick={() => toggle(f.k, v)}
+                type="button"
+                className="fb-chip"
+                key={`${k} ${v}`}
+                onClick={() => toggle(k, v)}
               >
-                {v} <em>{n}</em>
+                <small>{k}:</small>
+                {v}
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  aria-hidden="true"
+                >
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
               </button>
-            ))}
-          </div>
+            ))
+          )}
         </div>
-      ))}
+      )}
     </div>
   )
 }
