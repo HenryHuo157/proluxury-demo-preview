@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  // GitHub Pages 部署於子路徑，資源需以相對路徑引用
+  base: './',
   server: {
     port: 5173,
     host: true,
