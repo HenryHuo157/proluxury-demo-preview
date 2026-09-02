@@ -1,0 +1,136 @@
+{
+ "groups": [
+  {
+   "code": "EA",
+   "nameZh": "廚房電器",
+   "nameEn": "Kitchen Appliances",
+   "subs": [
+    {
+     "code": "EA01",
+     "nameZh": "電飯鍋",
+     "nameEn": "Rice Cookers",
+     "count": 20
+    },
+    {
+     "code": "EA02",
+     "nameZh": "多用途電鍋",
+     "nameEn": "Multi-Cookers",
+     "count": 26
+    },
+    {
+     "code": "EA03",
+     "nameZh": "特式電廚具",
+     "nameEn": "Specialty Cookware",
+     "count": 8
+    },
+    {
+     "code": "EA04",
+     "nameZh": "電熱水器皿",
+     "nameEn": "Kettles & Water Heaters",
+     "count": 16
+    },
+    {
+     "code": "EA05",
+     "nameZh": "食物處理器",
+     "nameEn": "Food Processors",
+     "count": 19
+    },
+    {
+     "code": "EA06",
+     "nameZh": "電爐具及其他",
+     "nameEn": "Hobs & Cookers",
+     "count": 18
+    }
+   ]
+  },
+  {
+   "code": "EB",
+   "nameZh": "家居電器",
+   "nameEn": "Home Appliances",
+   "subs": [
+    {
+     "code": "EB01",
+     "nameZh": "清潔用品",
+     "nameEn": "Cleaning",
+     "count": 9
+    },
+    {
+     "code": "EB02",
+     "nameZh": "空氣調節",
+     "nameEn": "Air Care",
+     "count": 3
+    },
+    {
+     "code": "EB03",
+     "nameZh": "衣服護理",
+     "nameEn": "Garment Care",
+     "count": 4
+    },
+    {
+     "code": "EB04",
+     "nameZh": "拖把",
+     "nameEn": "Mops",
+     "count": 7
+    },
+    {
+     "code": "EB05",
+     "nameZh": "滅蚊蟲器",
+     "nameEn": "Insect Killers",
+     "count": 3
+    }
+   ]
+  },
+  {
+   "code": "EC",
+   "nameZh": "個人護理",
+   "nameEn": "Personal Care",
+   "subs": [
+    {
+     "code": "EC01",
+     "nameZh": "健康管理",
+     "nameEn": "Wellness",
+     "count": 4
+    },
+    {
+     "code": "EC02",
+     "nameZh": "美髮美容",
+     "nameEn": "Hair & Beauty",
+     "count": 5
+    }
+   ]
+  },
+  {
+   "code": "ED",
+   "nameZh": "季節產品",
+   "nameEn": "Seasonal",
+   "subs": [
+    {
+     "code": "ED01",
+     "nameZh": "夏季產品",
+     "nameEn": "Summer Collection",
+     "count": 66
+    },
+    {
+     "code": "ED02",
+     "nameZh": "冬季產品",
+     "nameEn": "Winter Collection",
+     "count": 20
+    }
+   ]
+  },
+  {
+   "code": "HB",
+   "nameZh": "家品用具",
+   "nameEn": "Home Essentials",
+   "subs": [
+    {
+     "code": "HB41",
+     "nameZh": "廚房小工具",
+     "nameEn": "Kitchen Tools",
+     "count": 2
+    }
+   ]
+  }
+ ],
+ "total": 230
+}
