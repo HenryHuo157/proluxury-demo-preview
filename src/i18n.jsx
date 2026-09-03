@@ -102,6 +102,15 @@ export const dict = {
     notFoundTitle: '找不到頁面',
     notFoundBody: '你前往的頁面不存在或已被移動，請返回主頁繼續瀏覽。',
     backHome: '返回主頁',
+    victorStatus: '在線 · 隨時為你解答',
+    victorTeaser: '你好！我係 AI 客服 Victor，有咩想問？',
+    victorWelcome: '你好！我係 AI 客服 Victor 💬 可以幫你介紹產品、規格、送貨同保養資訊，有咩想問？',
+    victorPlaceholder: '輸入你的問題…',
+    victorSend: '傳送',
+    victorOpen: '開啟 AI 客服 Victor',
+    victorThinking: 'Victor 正在輸入…',
+    victorError: '抱歉，暫時連線不上，請稍後再試。',
+    victorQuick: ['有咩風扇推介？', '送貨要幾耐？', '保養點登記？'],
     infoPages: {
       delivery: {
         title: '送貨安排',
@@ -226,6 +235,15 @@ export const dict = {
     notFoundTitle: 'Page Not Found',
     notFoundBody: 'The page you are looking for does not exist or has moved.',
     backHome: 'Back to Home',
+    victorStatus: 'Online · Always ready to help',
+    victorTeaser: 'Hi! I am Victor, your AI assistant. Ask me anything!',
+    victorWelcome: 'Hello! I am Victor, your AI assistant 💬 I can help with products, specs, delivery and warranty — what would you like to know?',
+    victorPlaceholder: 'Type your question…',
+    victorSend: 'Send',
+    victorOpen: 'Open AI assistant Victor',
+    victorThinking: 'Victor is typing…',
+    victorError: 'Sorry, the connection failed. Please try again later.',
+    victorQuick: ['Any fan recommendations?', 'How long is delivery?', 'How do I register warranty?'],
     infoPages: {
       delivery: {
         title: 'Delivery',

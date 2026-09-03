@@ -1006,7 +1006,7 @@ h1, h2, h3, h4, p { margin: 0; }
 .back-top {
   position: fixed;
   right: 26px;
-  bottom: 26px;
+  bottom: 94px;
   z-index: 90;
   width: 46px;
   height: 46px;
@@ -1029,6 +1029,332 @@ h1, h2, h3, h4, p { margin: 0; }
 }
 .back-top:hover { background: var(--c-accent); }
 .back-top:active { transform: scale(0.92); }
+
+/* ==========================================================================
+   AI 客服 Victor — 浮動聊天視窗（全站）
+   ========================================================================== */
+.victor { position: fixed; right: 26px; bottom: 26px; z-index: 240; }
+
+/* ---------- 浮動按鈕 ---------- */
+.victor-fab {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--c-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.victor-fab:hover {
+  background: var(--c-accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.victor-fab:active { transform: scale(0.92); }
+.victor-fab-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  padding: 3px 6px;
+  border-radius: 8px;
+  background: var(--c-accent);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(216, 35, 42, 0.4);
+}
+.victor-fab.ping::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(216, 35, 42, 0.45);
+  animation: victorPing 1.6s ease-out infinite;
+}
+@keyframes victorPing {
+  0% { transform: scale(0.85); opacity: 1; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* ---------- 進站小提示 ---------- */
+.victor-teaser {
+  position: absolute;
+  right: 4px;
+  bottom: 72px;
+  max-width: 230px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.55;
+  padding: 12px 34px 12px 15px;
+  background: #fff;
+  color: var(--c-ink);
+  border-radius: 14px 14px 4px 14px;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  animation: victorRise 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.victor-teaser::after {
+  content: '';
+  position: absolute;
+  right: 22px;
+  bottom: -6px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  transform: rotate(45deg);
+  border-radius: 3px;
+}
+.victor-teaser-x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-gray-light);
+  transition: color 0.2s, background 0.2s;
+}
+.victor-teaser-x:hover { color: var(--c-ink); background: var(--c-bg-soft); }
+
+/* ---------- 聊天面板 ---------- */
+.victor-panel {
+  position: absolute;
+  right: 0;
+  bottom: 74px;
+  width: min(384px, calc(100vw - 40px));
+  height: min(580px, calc(100vh - 160px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(18px) scale(0.98);
+  transform-origin: bottom right;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0.3s;
+}
+.victor.open .victor-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* 面板頂部 */
+.victor-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 16px;
+  background: linear-gradient(135deg, var(--c-primary-deep), var(--c-primary));
+  color: #fff;
+  flex-shrink: 0;
+}
+.victor-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--c-primary);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
+}
+.victor-id { flex: 1; min-width: 0; }
+.victor-id strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+}
+.victor-id span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.78);
+}
+.victor-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #46d17a;
+  box-shadow: 0 0 0 3px rgba(70, 209, 122, 0.22);
+  flex-shrink: 0;
+}
+.victor-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.85);
+  transition: background 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.victor-close:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+
+/* 訊息區 */
+.victor-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 16px;
+  background: var(--c-bg-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.victor-msg { display: flex; }
+.victor-msg.user { justify-content: flex-end; }
+.victor-bubble {
+  max-width: 84%;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+.victor-msg.bot .victor-bubble {
+  background: #fff;
+  border: 1px solid #dde2e9;
+  border-radius: 14px 14px 14px 4px;
+  box-shadow: 0 2px 6px rgba(14, 42, 71, 0.07);
+  animation: victorRise 0.3s ease;
+}
+.victor-msg.user .victor-bubble {
+  background: var(--c-primary);
+  color: #fff;
+  border-radius: 14px 14px 4px 14px;
+  animation: victorRise 0.3s ease;
+}
+.victor-msg.bot .victor-bubble strong { color: var(--c-primary); }
+.victor-bubble p { margin: 0 0 8px; }
+.victor-bubble > *:last-child { margin-bottom: 0; }
+.victor-bubble .vh { display: block; margin: 10px 0 4px; font-size: 14px; }
+.victor-bubble .vh:first-child { margin-top: 0; }
+.victor-bubble ul { list-style: disc; padding-left: 1.35em; margin: 4px 0 8px; }
+.victor-bubble ul:last-child { margin-bottom: 0; }
+.victor-bubble li { margin: 3px 0; }
+@keyframes victorRise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 輸入中動畫 */
+.victor-typing { display: flex; align-items: center; gap: 5px; padding: 14px 16px; }
+.victor-typing i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-gray-light);
+  animation: victorBlink 1.2s infinite ease-in-out;
+}
+.victor-typing i:nth-child(2) { animation-delay: 0.18s; }
+.victor-typing i:nth-child(3) { animation-delay: 0.36s; }
+@keyframes victorBlink {
+  0%, 80%, 100% { transform: scale(0.75); opacity: 0.45; }
+  40% { transform: scale(1.1); opacity: 1; }
+}
+
+/* 建議問題 */
+.victor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+.victor-chips button {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  color: var(--c-primary);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  animation: victorRise 0.3s ease backwards;
+}
+.victor-chips button:nth-child(2) { animation-delay: 0.08s; }
+.victor-chips button:nth-child(3) { animation-delay: 0.16s; }
+.victor-chips button:hover {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+  background: #fff;
+}
+
+/* 輸入區 */
+.victor-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--c-line);
+  background: #fff;
+  flex-shrink: 0;
+}
+.victor-input input {
+  flex: 1;
+  min-width: 0;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--c-ink);
+  background: var(--c-bg-soft);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 11px 18px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.victor-input input:focus {
+  border-color: var(--c-primary);
+  background: #fff;
+}
+.victor-input input::placeholder { color: var(--c-gray-light); }
+.victor-input button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--c-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.25s, transform 0.25s;
+}
+.victor-input button:hover:not(:disabled) { background: var(--c-accent); transform: translateY(-1px); }
+.victor-input button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ---------- 手機版 ---------- */
+@media (max-width: 640px) {
+  .victor { right: 16px; bottom: 16px; }
+  .back-top { right: 16px; bottom: 86px; }
+  .victor-fab { width: 54px; height: 54px; }
+  .victor-panel {
+    right: -16px;
+    bottom: 82px;
+    width: calc(100vw - 48px);
+    height: min(560px, calc(100vh - 150px));
+  }
+  .victor-teaser { max-width: 210px; bottom: 70px; right: 2px; }
+}
 
 /* ==========================================================================
    響應式
