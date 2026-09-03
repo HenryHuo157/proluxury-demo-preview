@@ -70,7 +70,7 @@ export const dict = {
       '以貼心設計讓每個家更舒適。',
     footerProductsTitle: '產品分類',
     footerServiceTitle: '客戶服務',
-    footerServiceLinks: ['聯絡我們', '送貨安排', '退換貨政策', '保養登記', '常見問題'],
+    footerServiceLinks: ['聯絡我們', '送貨安排', '退換貨政策', '保養登記', '常見問題', '私隱政策'],
     footerContactTitle: '聯絡我們',
     footerAddress: '香港九龍觀塘區',
     footerHotline: '客戶服務熱線：(852) 0000 0000',
@@ -140,6 +140,13 @@ export const dict = {
           { h: '哪裡可以查詢保養狀態？', body: '歡迎致電客戶服務熱線或電郵 enquiry@proluxury.com.hk，提供型號及購買單據即可查詢。' },
         ],
       },
+      privacy: {
+        title: '私隱政策',
+        lead: '我們重視你的個人資料私隱，並按香港《個人資料（私隱）條例》的規定妥善處理相關資料。',
+        sections: [
+          { h: '資料披露及轉移', body: '我們可能披露及轉移（無論在香港或海外）您的個人資料予向我們負有保密責任的代理人、承辦商，以向我們提供管理、數據分析、市場推廣及研究、電訊服務、專業服務或其他類似的服務。' },
+        ],
+      },
     },
   },
   en: {
@@ -186,7 +193,7 @@ export const dict = {
       'and seasonal products — thoughtful designs for a more comfortable home.',
     footerProductsTitle: 'Products',
     footerServiceTitle: 'Customer Service',
-    footerServiceLinks: ['Contact Us', 'Delivery', 'Returns & Exchange', 'Warranty Registration', 'FAQ'],
+    footerServiceLinks: ['Contact Us', 'Delivery', 'Returns & Exchange', 'Warranty Registration', 'FAQ', 'Privacy Policy'],
     footerContactTitle: 'Contact Us',
     footerAddress: 'Kwun Tong, Kowloon, Hong Kong',
     footerHotline: 'Hotline: (852) 0000 0000',
@@ -255,6 +262,13 @@ export const dict = {
           { h: 'How do I find a product?', body: 'Browse by category under Products, or search directly by product name or model number.' },
           { h: 'How are products delivered?', body: 'Large appliances are delivered by dedicated van; smaller items are shipped by courier. The method is confirmed when your order is placed.' },
           { h: 'Where can I check my warranty?', body: 'Call our service hotline or email enquiry@proluxury.com.hk with the model number and receipt to check your warranty status.' },
+        ],
+      },
+      privacy: {
+        title: 'Privacy Policy',
+        lead: 'We value the privacy of your personal data and handle it in accordance with the Personal Data (Privacy) Ordinance of Hong Kong.',
+        sections: [
+          { h: 'Disclosure and Transfer of Data', body: 'We may disclose and transfer (whether in Hong Kong or abroad) your personal data to agents and contractors under a duty of confidentiality to us, to provide us with administrative, data analytics, marketing and research, telecommunications, professional or other similar services.' },
         ],
       },
     },

@@ -1,5 +1,6 @@
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
+import BackToTop from './components/BackToTop.jsx'
 import { useRoute } from './router.jsx'
 import Home from './pages/Home.jsx'
 import ProductsPage from './pages/ProductsPage.jsx'
@@ -38,6 +39,7 @@ export default function App() {
       <Header />
       <main>{page}</main>
       <Footer />
+      <BackToTop />
     </div>
   )
 }

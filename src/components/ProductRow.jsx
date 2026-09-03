@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useLang, dict } from '../i18n.jsx'
 import SectionHead from './Section.jsx'
 import ProductCard from './ProductCard.jsx'
+import Reveal from './Reveal.jsx'
 import { IconChevronLeft, IconChevronRight, IconArrowRight } from './Icons.jsx'
 
 /** 橫向滾動商品列（季節推介） */
@@ -20,7 +21,7 @@ export default function ProductRow({ id, kicker, title, sub, items, moreHref }) 
   return (
     <section className="section prow-section" id={id}>
       <div className="container">
-        <div className="prow-head">
+        <Reveal className="prow-head">
           <SectionHead kicker={kicker} title={title} sub={sub} />
           <div className="prow-actions">
             <a className="link-more" href={moreHref ? `#${moreHref}` : '#/products'}>
@@ -35,10 +36,12 @@ export default function ProductRow({ id, kicker, title, sub, items, moreHref }) 
               </button>
             </div>
           </div>
-        </div>
+        </Reveal>
         <div className="prow-track" ref={trackRef}>
-          {items.map((p) => (
-            <ProductCard key={p.sku} product={p} />
+          {items.map((p, i) => (
+            <Reveal className="prow-item" key={p.sku} delay={Math.min(i * 60, 420)}>
+              <ProductCard product={p} />
+            </Reveal>
           ))}
         </div>
       </div>

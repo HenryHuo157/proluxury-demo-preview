@@ -5,7 +5,7 @@ import {
   IconPhone, IconMail, IconPin, IconFacebook, IconInstagram, IconYoutube, IconWhatsapp,
 } from './Icons.jsx'
 
-const SERVICE_HREFS = ['/contact', '/info/delivery', '/info/returns', '/info/warranty', '/info/faq']
+const SERVICE_HREFS = ['/contact', '/info/delivery', '/info/returns', '/info/warranty', '/info/faq', '/info/privacy']
 
 export default function Footer() {
   const { lang } = useLang()
