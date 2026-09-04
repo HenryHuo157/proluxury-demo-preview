@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proluxury 普樂氏 · 夏季產品目錄</title>
+<style>
+  :root {
+    --navy: #0e2a47; --navy-deep: #0b2138; --coral: #ff8f95;
+    --ink: #1f2937; --muted: #6b7280; --line: #e5e7eb; --bg: #f6f7f9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei",
+      "Noto Sans TC", "Heiti TC", sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---- 頁首 ---- */
+  .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%); color: #fff; }
+  .hero .wrap { padding: 52px 20px 44px; }
+  .brand { font-size: 14px; letter-spacing: .35em; color: var(--coral); font-weight: 700; }
+  .brand span { color: #fff; margin-left: 10px; letter-spacing: .2em; font-weight: 400; }
+  .hero h1 { font-size: clamp(30px, 5.4vw, 46px); font-weight: 800; margin-top: 18px; letter-spacing: .06em; }
+  .hero h1::after { content: ""; display: block; width: 56px; height: 4px; background: var(--coral); border-radius: 2px; margin-top: 16px; }
+  .hero .sub { margin-top: 14px; font-size: 15px; color: #c9d4e0; }
+  .hero .note { margin-top: 22px; display: inline-block; font-size: 13px; color: #ffd7d9;
+    border: 1px solid rgba(255,143,149,.45); border-radius: 999px; padding: 5px 14px; }
+
+  /* ---- 分類導航 ---- */
+  .toc { position: sticky; top: 0; z-index: 10; background: #fff; border-bottom: 1px solid var(--line);
+    box-shadow: 0 1px 6px rgba(14,42,71,.06); }
+  .toc .chips { display: flex; gap: 8px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; }
+  .toc .chips::-webkit-scrollbar { display: none; }
+  .toc a { flex: 0 0 auto; font-size: 13px; color: var(--navy); text-decoration: none;
+    border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; white-space: nowrap;
+    transition: background .15s, color .15s, border-color .15s; }
+  .toc a b { font-weight: 700; color: var(--coral); margin-left: 5px; }
+  .toc a:hover, .toc a.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .toc a:hover b, .toc a.on b { color: var(--coral); }
+
+  /* ---- 分組 ---- */
+  main { padding: 30px 0 10px; }
+  section { scroll-margin-top: 66px; padding-bottom: 26px; }
+  section h2 { font-size: 21px; color: var(--navy); display: flex; align-items: baseline; gap: 10px;
+    margin: 14px 0 16px; padding-left: 12px; border-left: 4px solid var(--coral); line-height: 1.3; }
+  section h2 span { font-size: 13px; color: var(--muted); font-weight: 400; }
+
+  /* ---- 產品卡 ---- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column; transition: box-shadow .18s, transform .18s; }
+  .card:hover { box-shadow: 0 8px 22px rgba(14,42,71,.12); transform: translateY(-2px); }
+  .thumb { aspect-ratio: 1/1; background: #fff; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; }
+  .thumb img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+  .thumb.empty { background: var(--bg); color: #9aa4b0; flex-direction: column; gap: 8px; font-size: 13px; }
+  .thumb.empty svg { width: 44px; height: 44px; }
+  .body { padding: 14px 15px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .sku { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 12px; color: var(--muted); letter-spacing: .03em; }
+  .name { font-size: 15.5px; font-weight: 700; color: var(--navy); line-height: 1.45; }
+  .desc { font-size: 13.5px; color: #4b5563; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+  .chip { font-size: 12px; background: var(--bg); border: 1px solid var(--line); color: #4b5563;
+    border-radius: 999px; padding: 2px 9px; line-height: 1.5; }
+  .chip.spec { background: #fff; border-color: #d8dee6; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 11.5px; }
+
+  /* ---- 頁尾 ---- */
+  footer { background: var(--navy-deep); color: #c9d4e0; margin-top: 30px; }
+  footer .wrap { padding: 30px 20px; text-align: center; font-size: 13px; }
+  footer .brand { letter-spacing: .3em; margin-bottom: 10px; display: block; }
+  footer p { margin-top: 4px; }
+
+  /* ---- 回頂 ---- */
+  #top-btn { position: fixed; right: 18px; bottom: 18px; width: 42px; height: 42px; border-radius: 50%;
+    border: none; background: var(--navy); color: #fff; font-size: 18px; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(14,42,71,.35); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 20; }
+  #top-btn.show { opacity: 1; pointer-events: auto; }
+
+  /* ---- 手機 ---- */
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .thumb img { padding: 6px; }
+    .body { padding: 10px 11px 12px; }
+    .name { font-size: 14px; }
+    .desc { font-size: 12.5px; -webkit-line-clamp: 3; }
+    .chip { font-size: 11px; padding: 2px 7px; }
+    .hero .wrap { padding: 38px 20px 34px; }
+    section h2 { font-size: 18px; }
+  }
+  @media (max-width: 400px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  /* ---- 列印 ---- */
+  @media print {
+    .toc, #top-btn { display: none; }
+    body { background: #fff; }
+    .hero { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .hero .wrap { padding: 26px 0 20px; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card { break-inside: avoid; box-shadow: none; }
+    section { padding-bottom: 8px; }
+    section h2 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">PROLUXURY<span>普樂氏</span></div>
+    <h1>夏季產品目錄</h1>
+    <p class="sub">共 66 款產品 · 7 個產品類別</p>
+    <p class="note">本目錄僅供 B2B 參考 · 價格及 MOQ 請聯絡我們的銷售團隊</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="產品分類">
+  <div class="chips wrap">
+      <a href="#g0">座檯或夾式風扇<b>27</b></a>
+      <a href="#g1">手提便攜風扇<b>15</b></a>
+      <a href="#g2">座地或立式風扇<b>11</b></a>
+      <a href="#g3">無葉風扇<b>5</b></a>
+      <a href="#g4">掛牆風扇<b>4</b></a>
+      <a href="#g5">冷風機<b>3</b></a>
+      <a href="#g6">座檯或座地兩用風扇<b>1</b></a>
+  </div>
+</nav>
+
+<main class="wrap">
+    <section id="g0">
+      <h2>座檯或夾式風扇<span>27 款</span></h2>
+      <div class="grid">
+      <article class="card">
+        <div class="thumb empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 18 5-5 3.5 3.5L17 13l4 5"/></svg><span>暫無圖片</span></div>
+        <div class="body">
+          <div class="sku">PCF002006</div>
+          <h3 class="name">普樂氏6吋夾型風扇 (白色/綠色)</h3>
+          
+          <div class="chips"><span class="chip spec">VOLTAGE: 220-240V</span><span class="chip spec">FREQUENCY: 50-60HZ</span><span class="chip spec">POWER: 25W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF010200B/PHF010200W_Blue_側面.png" alt="普樂氏 USB 座台風扇 (籃色)"></div>
+        <div class="body">
+          <div class="sku">PHF010200B</div>
+          <h3 class="name">普樂氏 USB 座台風扇 (籃色)</h3>
+          <p class="desc">1) 大風速 2)360°可調節 3)低噪音 4)3檔風速 5) 物料：ABS / Silica Gel 6) 淨重:370g</p>
+          <div class="chips"><span class="chip spec">Battery capacity: 2000mAh</span><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF010200P/PHF010200W_Pink_側面.png" alt="普樂氏 USB 座台風扇 (粉色)"></div>
+        <div class="body">
+          <div class="sku">PHF010200P</div>
+          <h3 class="name">普樂氏 USB 座台風扇 (粉色)</h3>
+          <p class="desc">1) 大風速 2)360°可調節 3)低噪音 4)3檔風速 5) 物料：ABS / Silica Gel 6) 淨重:370g</p>
+          <div class="chips"><span class="chip spec">Battery capacity: 2000mAh</span><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF041360G/PHF041360G_750x750_Logo.png" alt="普樂氏 USB 旋風噴霧加濕風扇 (綠色)"></div>
+        <div class="body">
+          <div class="sku">PHF041360G</div>
+          <h3 class="name">普樂氏 USB 旋風噴霧加濕風扇 (綠色)</h3>
+          <p class="desc">產品特性： 快速加濕及降溫 3檔風速調節 設夜燈功能 小巧便攜 90°左右自動搖擺 產品規格： 包裝尺寸：13.9cm(W) x 13.7cm(D) x 22.6cm(H) 包裝重量：0.75kg 產品尺寸：13.7cm(W) x 13.4cm(D) x 21.6cm(H)（不包括頂部掛繩） 產品重量：0.62kg 扇葉直徑：8.8cm 噴霧量：40ml/h (±15%) 水箱容量：280ml 電池容量：3600mAh</p>
+          <div class="chips"><span class="chip spec">Battery： 3600mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF041360W/PHF041360W_01_750x750.png" alt="普樂氏 USB 旋風噴霧加濕風扇 (白色)"></div>
+        <div class="body">
+          <div class="sku">PHF041360W</div>
+          <h3 class="name">普樂氏 USB 旋風噴霧加濕風扇 (白色)</h3>
+          <p class="desc">產品特性： 快速加濕及降溫 3檔風速調節 設夜燈功能 小巧便攜 90°左右自動搖擺 產品規格： 包裝尺寸：13.9cm(W) x 13.7cm(D) x 22.6cm(H) 包裝重量：0.75kg 產品尺寸：13.7cm(W) x 13.4cm(D) x 21.6cm(H)（不包括頂部掛繩） 產品重量：0.62kg 扇葉直徑：8.8cm 噴霧量：40ml/h (±15%) 水箱容量：280ml 電池容量：3600mAh</p>
+          <div class="chips"><span class="chip spec">Battery： 3600mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF054400B/PHF054400BRW_2_750x750.png" alt="普樂氏USB檯/夾 風扇 - 藍 4,000mAh"></div>
+        <div class="body">
+          <div class="sku">PHF054400B</div>
+          <h3 class="name">普樂氏USB檯/夾 風扇 - 藍 4,000mAh</h3>
+          <p class="desc">產品功能/特性： 內置4000mAh鋰電池，充電約5小時可用約4-15小時 5檔風速選擇，從輕柔微風到涼爽大風，隨意選擇 2種風類模式可供選擇，包括陣風模式和正常風扇模式 可360°自由旋轉，任意調整角度，可夾或放桌面使用 可立可夾，方便不同場地使用 設有1小時和2小時定時功能 備有氛圍夜燈 靜音出風，安靜舒適 產品包括 1 x 風扇、1 x USB充電線、1 x 說明書 產品規格： 產品尺寸：約 14.6cm x 19.7cm x 22.9cm 產品重量：約 0.6kg 電池電壓：3.7V 電池容量：4000mAh 輸入電壓/電流：DC5V/1000mA 輸出功率：5.3W 馬達轉速：2690轉</p>
+          <div class="chips"><span class="chip spec">Product size (cm) 14.6*19.7*22.9 4,000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF054400W/PHF054400BRW_2_750x750.png" alt="普樂氏USB檯/夾 風扇- 白色 4,000mAh"></div>
+        <div class="body">
+          <div class="sku">PHF054400W</div>
+          <h3 class="name">普樂氏USB檯/夾 風扇- 白色 4,000mAh</h3>
+          <p class="desc">產品功能/特性： 內置4000mAh鋰電池，充電約5小時可用約4-15小時 5檔風速選擇，從輕柔微風到涼爽大風，隨意選擇 2種風類模式可供選擇，包括陣風模式和正常風扇模式 可360°自由旋轉，任意調整角度，可夾或放桌面使用 可立可夾，方便不同場地使用 設有1小時和2小時定時功能 備有氛圍夜燈 靜音出風，安靜舒適 產品包括 1 x 風扇、1 x USB充電線、1 x 說明書 產品規格： 產品尺寸：約 14.6cm x 19.7cm x 22.9cm 產品重量：約 0.6kg 電池電壓：3.7V 電池容量：4000mAh 輸入電壓/電流：DC5V/1000mA 輸出功率：5.3W 馬達轉速：2690轉</p>
+          <div class="chips"><span class="chip spec">Product size (cm) 14.6*19.7*22.9 4,000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF056200P/PHF056200P_1_750x750.png" alt="普樂氏 USB 可伸展夾式風扇 (粉紅色)"></div>
+        <div class="body">
+          <div class="sku">PHF056200P</div>
+          <h3 class="name">普樂氏 USB 可伸展夾式風扇 (粉紅色)</h3>
+          <p class="desc">產品特性： 3擋風速調節 輕巧便攜，使用方便，可放桌面、可鉤掛在車上、可夾桌邊 360°隨意彎曲矽膠軟管，任意調整最佳角度 可拆卸式防護網設計，易拆、易裝、易清洗 靜音出風，安靜舒適 Type-C USB充電，方便快捷 產品包括風扇主機1台、說明書1份、USB充電線1條 產品規格： 包裝尺寸：18.5cm(W) x 7.5cm(D) x 19.2cm(H) 包裝重量：0.49kg 產品重量：0.38kg 伸展桿長度：21.5cm（可自由調整伸展桿方向） 扇頭直徑：12.6cm 扇葉直徑：10.4cm 電池容量：2000mAh</p>
+          <div class="chips"><span class="chip spec">Battery: 2000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF057400/PHF057400_2_750x750.png" alt="普樂氏USB伸縮可夾式座檯風扇(USB)"></div>
+        <div class="body">
+          <div class="sku">PHF057400</div>
+          <h3 class="name">普樂氏USB伸縮可夾式座檯風扇(USB)</h3>
+          <p class="desc">產品特性： 四檔風速調節：低、中、高、自然風 伸縮桿可拉高，可因應需要調節高度，放置在桌面或地面上使用 無刷直流電機，低噪音操作，安靜舒適 内置4000mAh充電池，可使用約2.7至11小時（視乎模式） 自動左右搖擺功能，送出舒適涼風 備有LED燈，3檔暖光選擇 面罩容易拆卸，方便清洗 產品配置：風扇1台、USB充電線1條、說明書1份 ※逆時針旋轉可拆下面蓋，裝上時對準卡位後順時針旋轉 產品規格： 包裝尺寸：18.3cm(W) x 15.8cm(D) x 36.2cm(H) 風扇重量：720g 扇頭直徑：17.6cm 風扇高度：36.5 - 73cm（未伸展至完全伸展範圍） 工作電壓：DC5V⎓ 充電電流：1.8A 電池電壓：4V 額定功率：4.7W 電池容量：4000mAh</p>
+          <div class="chips"><span class="chip spec">4000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF058360/PHF058360_00_750x750.png" alt="普樂氏USB檯/夾風扇 （紫色）"></div>
+        <div class="body">
+          <div class="sku">PHF058360</div>
+          <h3 class="name">普樂氏USB檯/夾風扇 （紫色）</h3>
+          <p class="desc">產品特性： 掛、立、夾三合一：強力底座夾可夾於床頭、書桌或嬰兒車；也可直接立於桌面，甚至掛在牆上，靈活應對各種場景需求 100檔無級調速：配備精確的智能數碼顯示屏，支援1至100檔風力調節，無論是柔和微風還是強力勁風，都能精準掌控 搭載廣角左右自動搖頭功能，模擬自然風的流動感 具備 2H / 4H / 6H 三段預約關機功能，無論是午間小憩或長夜睡眠，都能精準掌控運行時間，有效避免電力浪費 包括 Type-C 充電線1條、說明書1張 產品規格： 包裝尺寸：16.5cm(W) x 13cm(D) x 21.5cm(H) 包裝重量：0.57kg 產品重量：0.45kg 物料：ABS、鋁合金 扇葉直徑：10cm (4&quot;) 充電輸入：5V⎓2A 額定電壓：4.2V 額定功率：8.5W 電池容量：3600mAh 充電接口：Type-C 充電時間：3小時 使用時間：3至11小時</p>
+          <div class="chips"><span class="chip spec">3600mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF059260/PHF059260_01_750x750.png" alt="普樂氏USB檯/夾風扇 （白色）"></div>
+        <div class="body">
+          <div class="sku">PHF059260</div>
+          <h3 class="name">普樂氏USB檯/夾風扇 （白色）</h3>
+          <p class="desc">產品特性： 四檔風速調節：提供4檔風速選擇，從輕柔微風到涼爽大風，滿足不同環境下的降溫需求 120°寬廣自動搖擺：輕輕一按，風扇即可自動左右120°大範圍搖頭，大幅度送風範圍，清爽覆蓋更全面 180°垂直角度調節：配合個人需要手動調整吹風角度，提升整體的舒適度 二合一安裝方式：具備穩固的底座與強力夾子設計，既可平穩放置於枱頭，也能輕鬆夾在床頭、嬰兒車或書桌邊緣，適應多種場景 配備 1H / 2H / 4H / 8H 定時關機功能，依照需求精準設定，更能有效節約電源 包括 Type-C 充電線1條、說明書1張 產品規格： 包裝尺寸：15.6cm(W) x 15.5cm(D) x 18.6cm(H) 包裝重量：0.5kg 產品尺寸：17.8cm(W) x 12.2cm(D) x 23cm(H) 產品尺寸：0.45kg 扇葉直扇：12cm (4.7&quot;) 電源輸入：5V⎓8.5W 電池容量：2600mAh</p>
+          <div class="chips"><span class="chip spec">2600mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：2001-3000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF100180W/PHF100180W_01_750x750.png" alt="普樂氏USB座台風扇 (白)"></div>
+        <div class="body">
+          <div class="sku">PHF100180W</div>
+          <h3 class="name">普樂氏USB座台風扇 (白)</h3>
+          <p class="desc">產品特性： 5檔風力，可隨個人喜好切換 一按鍵可控制左右搖擺，風向角度約90° 可手動自由調節上下風向角度約20° 清潔時向左旋轉面罩即可拆開面罩，方便清潔 配置：風扇主機1部、說明書1張、Type-C充電線1條 產品規格： 包裝尺寸：14.5cm(W) x 10.1cm(D) x 20cm(H) 包裝重量：0.44kg 產品尺寸：14.3cm(W) x 9cm(D) x 19.5cm(H) 產品重量：0.34kg 額定輸入：5V⎓1.4A 額定功率：7W 電池容量：1800mAh</p>
+          <div class="chips"><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF100200GY/PHF100200GY_01_750x750.png" alt="普樂氏USB數碼顯示10檔座台風扇 (灰色)"></div>
+        <div class="body">
+          <div class="sku">PHF100200GY</div>
+          <h3 class="name">普樂氏USB數碼顯示10檔座台風扇 (灰色)</h3>
+          <p class="desc">產品特性： 10檔風力可選，輕重緩急可隨喜好切換，滿足夏日需求 一按鍵可自動左右搖擺，風向角度約90° 可手動自由調節上下風向角度約20° 顯示屏可顯示風扇模式提示、電量顯示、充電模式提示 標準配置：風扇主機1部、Type-C充電線1條、說明書1張 產品規格： 包裝尺寸：13cm(W) x 11.4cm(D) x 18cm(H) 包裝重量：0.5kg 產品重量：0.4kg 額定輸入：5V⎓2A 額定功率：10W 電池容量：2000mAh</p>
+          <div class="chips"><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF100300P/PHF100300P_01_750x750.png" alt="普樂氏USB數碼顯示10檔強力座台風扇 (紫色）"></div>
+        <div class="body">
+          <div class="sku">PHF100300P</div>
+          <h3 class="name">普樂氏USB數碼顯示10檔強力座台風扇 (紫色）</h3>
+          <p class="desc">產品特性： 10檔風力可選，可隨喜好切換，滿足夏日需求 一按鍵可自動左右搖擺，風向角度約90° 可手動自由調節上下風向角度約20° LED顯示屏幕，智能顯示電量和運作模式 清潔時向左旋轉面罩即可拆開，方便清潔 包括風扇主機1部、說明書1張、Type-C充電線1條 產品規格： 包裝尺寸：17.2cm(W) x 14.5cm(D) x 23.1cm(H) 包裝重量：0.89kg 產品重量：0.73kg 額定輸入：5V⎓2A 額定功率：10W 電池容量：3000mAh</p>
+          <div class="chips"><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：2001-3000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF101260/PHF101260_01_750x750.png" alt="普樂氏USB座台風扇 (卡其色)"></div>
+        <div class="body">
+          <div class="sku">PHF101260</div>
+          <h3 class="name">普樂氏USB座台風扇 (卡其色)</h3>
+          <p class="desc">產品特性： 四檔風速調節：提供4檔風速選擇，從輕柔微風到涼爽大風，滿足不同環境下的降溫需求 75°左右自動搖擺：輕輕一按，風扇即可自動左右75°搖頭，清爽覆蓋更全面 90°垂直角度調節：可由正面調整至向上90°，配合個人需要手動調整吹風角度，提升整體的舒適度 1-8小時定時關機功能，依照需求精準設定，更能有效節約電源 包括 Type-C 充電線1條、說明書1張 產品規格： 包裝尺寸：15.3cm(W) x 11.3cm(D) x 22.4cm(H) 包裝重量：0.45kg 產品尺寸：14.8cm(W) x 10.2cm(D) x 21.5cm(H) 產品尺寸：0.35kg 扇葉直扇：12cm (4.7&quot;) 電源輸入：5V⎓10W 電池容量：2600mAh</p>
+          <div class="chips"><span class="chip spec">2600mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：2001-3000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF102400/PHF102400_01_750x750.png" alt="普樂氏USB座台風扇 (白色)"></div>
+        <div class="body">
+          <div class="sku">PHF102400</div>
+          <h3 class="name">普樂氏USB座台風扇 (白色)</h3>
+          <p class="desc">產品特點： 便攜式設計，適用於書桌、戶外、露營、旅行等多種場合使用 配備三段風速調節，並內建可調亮度的柔光LED燈，夏日夜晚理想之選 具備自動90°左右搖頭功能，搭配手動90°風扇頭仰角調節，輕鬆實現廣角和多角度送風 採用高容量4000mAh鋰電池，搭配Type-C充電設計，無線便攜，適用於多種場合 配件包括Type-C充電線1條、說明書1張 產品規格： 包裝尺寸：18cm(W) x 17.5cm(D) x 21.5cm(H) 包裝重量：0.78kg 產品尺寸：20cm(W) x 15.8cm(D) x 24cm(H) 產品重量：0.63kg 扇葉直徑：13cm (5.1&quot;) 充電時間：5-7小時 (實際時間可能因充電器功率而異) 使用時間：4-20小時 (因風速而異：低速約20小時，中速約12小時，高速約4小時) 充電接口：Type-C 額定輸入：5V⎓2A 額定功率：5W 電池容量：4000mAh</p>
+          <div class="chips"><span class="chip spec">4000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTF005016/PTF005016_01_750x750.png" alt="普樂氏16吋座檯風扇 (白色)"></div>
+        <div class="body">
+          <div class="sku">PTF005016</div>
+          <h3 class="name">普樂氏16吋座檯風扇 (白色)</h3>
+          <p class="desc">產品特性： 低、中、高三段風速選擇 3片式風扇，風力強勁 左右送風擺動，令室內空氣流通 手動上下微調送風 產品規格： 包裝尺寸：43.4cm(W) x 27cm(D) x 57cm(H) 包裝重量：3.22kg 產品尺寸：43cm(W) x 43.2cm(H) 產品重量：2.56kg 扇葉直徑：39cm / 16&quot; 電線長度：150cm 電壓：220-240V~ 功率：40W</p>
+          <div class="chips"><span class="chip spec">VOLTAGE: 220-240 V~</span><span class="chip spec">FREQUENCY: 50-60 HZ</span><span class="chip spec">POWER: 40W OR 60W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：12.1-16吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTF008012/PTF008012_01_750x750.png" alt="普樂氏12吋座檯風扇 (白/灰)"></div>
+        <div class="body">
+          <div class="sku">PTF008012</div>
+          <h3 class="name">普樂氏12吋座檯風扇 (白/灰)</h3>
+          <p class="desc">產品特性： 三段風速選擇：1檔(低速)、2檔(中速)、3檔(高速) 5片扇葉，風力強勁 按鍵式控制，左右送風擺動，令室內空氣流通 手動上下調較方向，方便控制 扇葉和網罩可拆除，方便清洗和收納 產品規格： 包裝尺寸：35cm(W) x 20cm(D) x 36.5cm(H) 包裝重量：2.46kg 產品尺寸：33.5cm(W) x 25cm(D) x 47cm(H) 扇葉直徑：28.5cm 電線長度：154cm 電壓：220-240V~ 功率：40W</p>
+          <div class="chips"><span class="chip spec">VOLTAGE: 220-240V</span><span class="chip spec">FREQUENCY: 50-60Hz</span><span class="chip spec">POWER: 40W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：9.1-12吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 18 5-5 3.5 3.5L17 13l4 5"/></svg><span>暫無圖片</span></div>
+        <div class="body">
+          <div class="sku">PTF501006</div>
+          <h3 class="name">普樂氏6吋座檯循環風扇</h3>
+          <p class="desc">產品特性： 極簡奶油白色設計，輕鬆融入任何現代居家裝潢 具備3段風速調節（低、中、高），一旋切換風量大小 左右自動擺頭送風，強效促進室內空氣循環 手動仰角調節，精準掌控送風角度 外型小巧輕量，靈活移動且不佔收納空間 產品規格： 包裝尺寸：28.4cm(W) x 24.6cm(D) x 30.5cm(H) 包裝重量：1.99kg 產品尺寸：24.7cm(W) x 21cm(D) x 30.4cm(H) 產品重量：1.37kg 電線長度：156cm 扇葉尺寸：6吋 電壓：220-240V~ 功率：26W</p>
+          <div class="chips"><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTF501107/PTF501107_2_750x750.png" alt="普樂氏7吋遙控循環風扇"></div>
+        <div class="body">
+          <div class="sku">PTF501107</div>
+          <h3 class="name">普樂氏7吋遙控循環風扇</h3>
+          <p class="desc">產品特性： 3段風速設計：低、中、高 4種模式：正常風、自然風、睡眠風、智能模式（風速會根據溫度變化自動變化） 3種自動搖擺功能：上下、左右、上下左右搖擺，迅速令室內空氣流通 最長7.5小時定時功能，定時器設以每0.5小時為單位 可透過輕觸式顯示屏和遙控器操作，清晰方便 體積輕巧，容易收納 睡眠風規格： 低檔+睡眠風模式：以低檔和自然風模式運行，一直工作到定時時間結束或機器關閉。 中檔+睡眠風模式：中檔自然風模式運轉30分鐘後，自動切換至低檔自然風模式，並以低檔自然風模式工作，一直工作到定時時間結束或機器關閉。 高檔+睡眠風模式：高檔自然風模式運轉30分鐘後，自動切換至中檔自然風模式，再運轉30分鐘後自動切換至低檔自然風模式。它將在低檔自然風模式下工作，直到定時器結束或機器關閉。 產品規格： 包裝尺寸：28cm(W) x 25.7cm(D) x 37.6cm(H) 包裝重量：3.03kg 產品尺寸：21.3cm(W) x 23.5cm(D) x 32.6cm(H) 產品重量：2.33kg 扇葉直徑：18cm / 7&quot; 電線長度：152cm 電壓：220-240V~ 功率：52W</p>
+          <div class="chips"><span class="chip spec">VOLTAGE: 220-240V</span><span class="chip spec">FREQUENCY: 50/60HZ</span><span class="chip spec">POWER: 45W</span><span class="chip spec">UNIT SIZE: 23.2 X 21.0 X 32.8CM</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：6.1-9吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 18 5-5 3.5 3.5L17 13l4 5"/></svg><span>暫無圖片</span></div>
+        <div class="body">
+          <div class="sku">PTF502006</div>
+          <h3 class="name">普樂氏6吋遙控循環風扇</h3>
+          <p class="desc">產品特性： 6段精細風速，滿足從靜音睡眠到暢快清涼的所有需求 上下左右自動搖擺，強效帶動全屋空氣對流 8小時定時功能，睡眠、出門靈活設定 配備無線遙控器，免起身、免彎腰，隨時指尖掌控 小巧輕量機身搭配貼心提手，靈活移動不費力，收納更不佔空間 產品規格： 包裝尺寸：26cm(W) x 25.5cm(D) x 37cm(H) 包裝重量：2.26kg 產品尺寸：21.5cm(W) x 21cm(D) x 32cm(H)（連手柄高度36.5cm） 產品重量：1.62kg 電線長度：164cm 扇葉尺寸：6吋 電壓：220-240V~ 功率：26W</p>
+          <div class="chips"><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTF502008B/PTF502008B_2_750x750.png" alt="普樂氏DC空氣座檯循環風扇-8&quot;"></div>
+        <div class="body">
+          <div class="sku">PTF502008B</div>
+          <h3 class="name">普樂氏DC空氣座檯循環風扇-8&quot;</h3>
+          <p class="desc">產品特性： 12段風速可供選擇，能滿足你不同需要 3種送風模式：正常風、自然風、睡眠風，以配合不同天氣及時段需要 可調節上下、左右、上下左右同時擺動三種擺動模式，能將風吹到室內每個角落 設有最長12小時定時功能，讓你一覺睡天光 配備高效能直流電機，省時節能及低噪音 外觀精緻，體積小巧，易於存放 產品規格： 包裝尺寸：34.5cm(W) x 24.5cm(D) x 40.5cm(H) 包裝重量：3.15kg 產品尺寸：32.3cm(W) x 20.5cm(D) x 36cm(H) 產品重量：2.3kg 扇葉直徑：20cm / 8吋 電線長度：158cm 電壓：220-240V~ 功率：25W</p>
+          <div class="chips"><span class="chip spec">Voltage:AC220-240V, Power: 25W, Frequency:50-60Hz</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：6.1-9吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTF505016/PTF505016_750x750.png" alt="普樂氏16吋座臺風扇"></div>
+        <div class="body">
+          <div class="sku">PTF505016</div>
+          <h3 class="name">普樂氏16吋座臺風扇</h3>
+          <p class="desc">產品特性： 4段風速調節及1小時定時旋鈕 5片扇葉設計，風量強勁 左右自動搖擺送風，並可上下調校角度 流線型和便攜式設計 電機超溫安全保護 高性能電機，高效寧靜 產品規格： 包裝尺寸：46cm(W) x 21cm(D) x 48.5cm(H) 包裝重量：4.08kg 產品尺寸：45.5cm(W) x 29.8cm(D) x 64cm(H) 產品重量：2.83kg 扇葉直徑：16吋 電壓：220-240V~ 功率：60W</p>
+          <div class="chips"><span class="chip spec">Voltage: AC220-240V~ 50-60Hz， 60W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：12.1-16吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTF704012/PTF704012_black_brass_750x750.png" alt="普樂氏12吋金屬座檯扇 (黑古銅)"></div>
+        <div class="body">
+          <div class="sku">PTF704012</div>
+          <h3 class="name">普樂氏12吋金屬座檯扇 (黑古銅)</h3>
+          <p class="desc">產品特性： 精密平衡金屬葉設計，特強風力，穩定安靜 左右自動搖擺送風功能，迅速令室內空氣流通 三段風速調節，隨心切換最舒適的風感溫度 安全可靠設計，高密度網罩及過熱保護裝置 易提式手挽設計，方便移動 產品規格： 包裝尺寸：35.4cm(W) x 22.4cm(D) x 35cm(H) 包裝重量：3.43kg 產品尺寸：33.5cm(W) x 24.2cm(D) x 39.8cm(H) 產品重量：2.81kg 扇葉直徑：30cm (12&quot;) 電線長度：170cm 電壓：220-240V~ 功率：35W</p>
+          <div class="chips"><span class="chip spec">Voltage: 220 V - 240 V</span><span class="chip spec">Frequency: 50 Hz / 60 Hz</span><span class="chip spec">Power: 35 W</span><span class="chip spec">Size: 12&quot; Table Fan (Black Brass Color)-5PCS BLADES</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：9.1-12吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTF904012/PTF904012_2_750x750.png" alt="普樂氏12吋鴻運扇"></div>
+        <div class="body">
+          <div class="sku">PTF904012</div>
+          <h3 class="name">普樂氏12吋鴻運扇</h3>
+          <p class="desc">產品特性： 五片扇葉設計，可吹出強力風 百葉扇可靜止和轉動，轉動時送風角度大 設有1小時定時關機功能，定時以每10分鐘為單位 3段風速可供選擇：低、中、高 高性能電機，低嘈音，讓環境舒適寧靜 產品規格： 包裝尺寸：39.5cm(W) x 16cm(D) x 44cm(H) 包裝重量：2.7kg 產品尺寸：38.8cm(W) x 15.3cm(D) x 43.3cm(H) 產品重量：2.3kg 扇葉尺寸：12吋 電壓：220-240V~ 功率：50W</p>
+          <div class="chips"><span class="chip spec">Voltage: 220-240V</span><span class="chip spec">Frequency: 50/60Hz</span><span class="chip spec">Power: 60W</span><span class="chip spec">Size : 12&quot; BOX FAN (FAN BLADE SIZE：28CM)</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：9.1-12吋</span><span class="chip">主要功能：鴻運送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTF905012/PTF905012_2_750x750.png" alt="普樂氏12吋鴻運扇連遙控器"></div>
+        <div class="body">
+          <div class="sku">PTF905012</div>
+          <h3 class="name">普樂氏12吋鴻運扇連遙控器</h3>
+          <p class="desc">產品特性： 3種送風模式：正常模式、自然模式、睡眠模式 設有百葉扇旋轉鍵，按下可控制前面百葉扇轉動，達致360°送風 5片扇葉設計，可吹出強力風 3段風速設計：低、中、高 7.5小時定時功能，定時以每0.5小時為單位，易於控制關機操作時間 配備無線遙控器，方便遙距操作 產品規格： 包裝尺寸：39cm(W) x 18cm(D) x 42.5cm(H) 包裝重量：2.66kg 產品尺寸：38cm(W) x 17.5cm(D) x 40.4cm(H) 產品重量：2.13kg 扇葉尺寸：12吋 電壓：220-240V~ 功率：40W</p>
+          <div class="chips"><span class="chip spec">VOLTAGE: 220 V - 240 V</span><span class="chip spec">FREQUENCY: 50 Hz - 60 Hz</span><span class="chip spec">POWER: 40 W</span><span class="chip spec">BLADES: 28.2CM (11.1&quot;)</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：9.1-12吋</span><span class="chip">主要功能：鴻運送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTF906012/PTF906012_00_750x750.png" alt="普樂氏12吋鴻運扇 (米白/淺灰)"></div>
+        <div class="body">
+          <div class="sku">PTF906012</div>
+          <h3 class="name">普樂氏12吋鴻運扇 (米白/淺灰)</h3>
+          <p class="desc">產品特性： 5片強力扇葉，驅動強勁穩定氣流 一鍵操控前面百葉扇旋轉，實現360°廣角送風 2小時定時關機功能，滿足安睡或小憩所需 3段風速，一扭即轉 免組裝設計，開箱即可享受清涼 產品規格： 包裝尺寸：38.5cm(W) x 15.5cm(D) x 43.5cm(H) 包裝重量：2.39kg 產品尺寸：38cm(W) x 14.5cm(D) x 42.5cm(H) 產品重量：2kg 扇葉直徑：12&quot; 電線長度：160cm 電壓：220-240V~ 功率：40W</p>
+          <div class="chips"><span class="chip spec">VOLTAGE: 220 V - 240 V</span><span class="chip spec">FREQUENCY: 50 Hz - 60 Hz</span><span class="chip spec">POWER: 40 W</span><span class="chip spec">BLADES: 29CM (11.4&quot;)</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：9.1-12吋</span><span class="chip">主要功能：鴻運送風</span></div>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section id="g1">
+      <h2>手提便攜風扇<span>15 款</span></h2>
+      <div class="grid">
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF001200P/PHF001200_pink_750x750.png" alt="普樂氏 USB 可掛式風扇 (粉色)"></div>
+        <div class="body">
+          <div class="sku">PHF001200P</div>
+          <h3 class="name">普樂氏 USB 可掛式風扇 (粉色)</h3>
+          <p class="desc">1) 多種使用方式: 掛腰、在頸掛上、載在手腕上及放在桌面上 2) 可作充電寶（2000mAh） 3) 向上出風 4) 物料：ABS 6) 淨重: 160g</p>
+          <div class="chips"><span class="chip spec">Battery capacity: 2000mAh</span><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF012200G/PHF012200G_750x750.png" alt="普樂氏 USB 折疊製冷手提風扇 (綠色)"></div>
+        <div class="body">
+          <div class="sku">PHF012200G</div>
+          <h3 class="name">普樂氏 USB 折疊製冷手提風扇 (綠色)</h3>
+          <p class="desc">產品特性： 三檔風速調節 備冷敷按鍵，可開啟冷敷模式，格外冰爽 風扇頭部可以摺疊，可手提或放桌面上使用 迷你尺寸，輕巧便攜 標準配置：風扇1台、USB充電線1條、說明書1份 產品規格： 包裝尺寸：6.7cm(W) x 5.7cm(D) x 17.4cm(H) 產品尺寸：6.5cm(W) x 5.5cm(D) x 17.2cm(H) 產品重量：170g 工作電壓：DC5V 充電電流：1A 電池電壓：3.7V 輸出功率：≤5W 電池容量：2000mAh</p>
+          <div class="chips"><span class="chip spec">2000mAh</span><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風/製冷</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF012200W/PHF012200W_750x750.png" alt="普樂氏 USB 折疊製冷手提風扇 (白色)"></div>
+        <div class="body">
+          <div class="sku">PHF012200W</div>
+          <h3 class="name">普樂氏 USB 折疊製冷手提風扇 (白色)</h3>
+          <p class="desc">產品特性： 三檔風速調節 備冷敷按鍵，可開啟冷敷模式，格外冰爽 風扇頭部可以摺疊，可手提或放桌面上使用 迷你尺寸，輕巧便攜 標準配置：風扇1台、USB充電線1條、說明書1份 產品規格： 包裝尺寸：6.7cm(W) x 5.7cm(D) x 17.4cm(H) 產品尺寸：6.5cm(W) x 5.5cm(D) x 17.2cm(H) 產品重量：170g 工作電壓：DC5V 充電電流：1A 電池電壓：3.7V 輸出功率：≤5W 電池容量：2000mAh</p>
+          <div class="chips"><span class="chip spec">2000mAh</span><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風/製冷</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF015120T/PHF015120T_01_750x750.png" alt="普樂氏USB手提式風扇(透明色)"></div>
+        <div class="body">
+          <div class="sku">PHF015120T</div>
+          <h3 class="name">普樂氏USB手提式風扇(透明色)</h3>
+          <p class="desc">產品特性： 5檔風力，可隨個人喜好切換 小巧輕便，可隨身攜帶 可手持，可掛身，使用方便 內容物：風扇主機1部、Type-C充電線1條、掛繩1條、說明書1張 產品規格： 包裝尺寸：7.4cm(W) x 4.8cm(D) 15.8cm(H) 包裝重量：0.16kg 產品重量：0.12kg 額定輸入：5V⎓1A 額定功率：5W 電池容量：1200mAh</p>
+          <div class="chips"><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF016200B/PHF016200B_01_750x750.png" alt="普樂氏USB便攜式製冷手提風扇 (藍色)"></div>
+        <div class="body">
+          <div class="sku">PHF016200B</div>
+          <h3 class="name">普樂氏USB便攜式製冷手提風扇 (藍色)</h3>
+          <p class="desc">產品特性： 三檔風速調節：1檔、2檔、3檔 可開啟冷敷模式，格外冰爽 可立、可掛、可手持，方便使用 輕巧迷你便攜，貼心登山扣設計，舒適無感解放雙手 包裝配件：手持冰敷風扇1把、Type-C充電線1條、說明書1張 產品規格： 包裝尺寸：6.6cm(W) x 5.7cm(D) x 17.1cm(H) 包裝重量：0.22kg 產品重量：0.17kg 扇葉直徑：4.5cm 工作電壓：5V⎓ 充電電流：1A 電池電壓：3.7V 電池容量：2000mAh</p>
+          <div class="chips"><span class="chip spec">2000mAh</span><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風/製冷</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF016200C/PHF016200C_01_750x750.png" alt="普樂氏USB便攜式製冷手提風扇 (米黃)"></div>
+        <div class="body">
+          <div class="sku">PHF016200C</div>
+          <h3 class="name">普樂氏USB便攜式製冷手提風扇 (米黃)</h3>
+          <p class="desc">產品特性： 三檔風速調節：1檔、2檔、3檔 可開啟冷敷模式，格外冰爽 可立、可掛、可手持，方便使用 輕巧迷你便攜，貼心登山扣設計，舒適無感解放雙手 包裝配件：手持冰敷風扇1把、Type-C充電線1條、說明書1張 產品規格： 包裝尺寸：6.6cm(W) x 5.7cm(D) x 17.1cm(H) 包裝重量：0.22kg 產品重量：0.17kg 扇葉直徑：4.5cm 工作電壓：5V⎓ 充電電流：1A 電池電壓：3.7V 電池容量：2000mAh</p>
+          <div class="chips"><span class="chip spec">2000mAh</span><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風/製冷</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF018400BK/PHF018400BK_01_750x750.png" alt="普樂氏USB高速手提風扇 (黑色)"></div>
+        <div class="body">
+          <div class="sku">PHF018400BK</div>
+          <h3 class="name">普樂氏USB高速手提風扇 (黑色)</h3>
+          <p class="desc">產品特性： 三檔風力，可隨個人喜好切換 高轉速，強勁風力，無懼夏日熱浪 內置4000mAh大容量電池，持續使用 小巧輕便，可輕鬆放入口袋攜帶 機身流線外形，可手持，可掛身，並有安全鎖 包裝配件：風扇主機1部、Type-C充電線1條、掛繩1條、說明書1張 產品規格： 包裝尺寸：7.8cm(W) x 4cm(D) x 14cm(H) 扇葉直徑：2.9cm 疊形 工作電壓：DC5V⎓ 充電電流：1A 電池容量：4000mAh</p>
+          <div class="chips"><span class="chip spec">4000mAh</span><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF018400W/PHF018400W_01_750x750.png" alt="普樂氏USB高速手提風扇 (白色)"></div>
+        <div class="body">
+          <div class="sku">PHF018400W</div>
+          <h3 class="name">普樂氏USB高速手提風扇 (白色)</h3>
+          <p class="desc">產品特性： 三檔風力，可隨個人喜好切換 高轉速，強勁風力，無懼夏日熱浪 內置4000mAh大容量電池，持續使用 小巧輕便，可輕鬆放入口袋攜帶 機身流線外形，可手持，可掛身，並有安全鎖 包裝配件：風扇主機1部、Type-C充電線1條、掛繩1條、說明書1張 產品規格： 包裝尺寸：7.8cm(W) x 4cm(D) x 14cm(H) 扇葉直徑：2.9cm 疊形 工作電壓：DC5V⎓ 充電電流：1A 電池容量：4000mAh</p>
+          <div class="chips"><span class="chip spec">4000mAh</span><span class="chip">供電方式：USB充電(內置電池)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF019400GR/PHF019400GY_01_750x750.png" alt="普樂氏USB手持高速風扇(深灰)"></div>
+        <div class="body">
+          <div class="sku">PHF019400GR</div>
+          <h3 class="name">普樂氏USB手持高速風扇(深灰)</h3>
+          <p class="desc">產品特性： 100檔無級風量調節：可自由精確調整風力大小，從微風到強風隨心所欲 LED智能數碼顯示：機身配備清晰顯示屏，電量與風速一目瞭然，告別突然斷電的尷尬 高速渦輪動力：搭載高性能電機，提供遠超傳統小風扇的極致風力 持久續航與便捷充電：內建4000mAh高容量鋰電池，支援長效使用 採用主流 Type-C 快速充電接口，與大多數手機充電線通用 輕巧便攜，質感設計：無論是手持還是放在包包裡都毫不費力 配件包括Type-C充電線1條、掛繩1條、說明書1張 產品規格： 包裝尺寸：7.3cm(W) x 6.3cm(D) x 18.1cm(H) 包裝重量：0.27kg 產品尺寸：6cm(W) x 5.9cm(D) x 15.8cm(H) 產品重量：0.21kg 扇葉直徑：4.5cm (1.7&quot;) 輸入電壓 ：5V 輸入電流 ：1A 電池容量 ：4000mAh 3.7V (14.8Wh)</p>
+          <div class="chips"><span class="chip spec">4000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF019400Y/PHF019400Y_01_750x750.png" alt="普樂氏USB手持高速風扇(米黃色)"></div>
+        <div class="body">
+          <div class="sku">PHF019400Y</div>
+          <h3 class="name">普樂氏USB手持高速風扇(米黃色)</h3>
+          <p class="desc">產品特性： 100檔無級風量調節：可自由精確調整風力大小，從微風到強風隨心所欲 LED智能數碼顯示：機身配備清晰顯示屏，電量與風速一目瞭然，告別突然斷電的尷尬 高速渦輪動力：搭載高性能電機，提供遠超傳統小風扇的極致風力 持久續航與便捷充電：內建4000mAh高容量鋰電池，支援長效使用 採用主流 Type-C 快速充電接口，與大多數手機充電線通用 輕巧便攜，質感設計：無論是手持還是放在包包裡都毫不費力 配件包括Type-C充電線1條、掛繩1條、說明書1張 產品規格： 包裝尺寸：7.3cm(W) x 6.3cm(D) x 18.1cm(H) 包裝重量：0.27kg 產品尺寸：6cm(W) x 5.9cm(D) x 15.8cm(H) 產品重量：0.21kg 扇葉直徑：4.5cm (1.7&quot;) 輸入電壓 ：5V 輸入電流 ：1A 電池容量 ：4000mAh 3.7V (14.8Wh)</p>
+          <div class="chips"><span class="chip spec">4000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF020300W/PHF020300W_01_750x750.png" alt="普樂氏USB 摺疊手提式風扇(白色)"></div>
+        <div class="body">
+          <div class="sku">PHF020300W</div>
+          <h3 class="name">普樂氏USB 摺疊手提式風扇(白色)</h3>
+          <p class="desc">產品特性： 100檔無級風量調節：可自由精確調整風力大小，從微風到強風隨心所欲 數位顯示：風扇中心配備顯示屏，可實時查看當前風速擋位或剩餘電量，避免突然沒電的尷尬 摺疊設計：採用可摺疊手柄設計，除了手持使用外，亦可摺疊放置於桌面作為座檯扇使用，滿足不同環境需求 輕巧便攜：外型簡約時尚，機身輕量化設計，方便放入手袋或掛頸使用，是通勤、旅遊或戶外活動的消暑必備良品 配件包括Type-C充電線1條、掛繩1條、說明書1張 產品規格： 包裝尺寸：9.4cm(W) x 4.3cm(D) x 21.4cm(H) 包裝重量：0.27kg 產品尺寸：8cm(W) x 4.2cm(D) x 19.8cm(H) 產品重量：0.2kg 扇葉直徑：6.8cm (2.7&quot;) 輸入電壓：5V 輸入電流：1A 電池容量：3000mAh</p>
+          <div class="chips"><span class="chip spec">3000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：2001-3000mAh</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF021200B/PHF021200B_01_750x750.png" alt="普樂氏USB製冷摺?手提風扇 (藍色)"></div>
+        <div class="body">
+          <div class="sku">PHF021200B</div>
+          <h3 class="name">普樂氏USB製冷摺?手提風扇 (藍色)</h3>
+          <p class="desc">產品特性： 三檔風速調節：提供三種不同強度的風力，無論是微風還是強風，均能隨心切換 製冷冷敷功能：備有專門的冷敷按鍵，啟動後製冷片迅速降溫，帶來格外冰爽的觸感 輕巧便攜：搭配貼心登山扣設計，可輕鬆掛在背囊上 配件包括Type-C充電線1條和說明書1張 產品規格： 包裝尺寸：6.2cm(W) x 6cm(D) x 18.6cm(H) 包裝重量：0.22kg 產品尺寸：5.5cm(W) x 5.7cm(D) x 17.8cm(H) 產品重量：0.16kg 扇葉直徑：4.4cm (1.7&quot;) 輸入電壓：5V 輸入電流：1A 電池容量：2000mAh</p>
+          <div class="chips"><span class="chip spec">2000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風/製冷</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF021200C/PHF021200C_01_750x750.png" alt="普樂氏USB製冷摺疊手提風扇 (米黃)"></div>
+        <div class="body">
+          <div class="sku">PHF021200C</div>
+          <h3 class="name">普樂氏USB製冷摺疊手提風扇 (米黃)</h3>
+          <p class="desc">產品特性： 三檔風速調節：提供三種不同強度的風力，無論是微風還是強風，均能隨心切換 製冷冷敷功能：備有專門的冷敷按鍵，啟動後製冷片迅速降溫，帶來格外冰爽的觸感 輕巧便攜：搭配貼心登山扣設計，可輕鬆掛在背囊上 配件包括Type-C充電線1條和說明書1張 產品規格： 包裝尺寸：6.2cm(W) x 6cm(D) x 18.6cm(H) 包裝重量：0.22kg 產品尺寸：5.5cm(W) x 5.7cm(D) x 17.8cm(H) 產品重量：0.16kg 扇葉直徑：4.4cm (1.7&quot;) 輸入電壓：5V 輸入電流：1A 電池容量：2000mAh</p>
+          <div class="chips"><span class="chip spec">2000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：1001-2000mAh</span><span class="chip">主要功能：普通送風/製冷</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF022400B/PHF022400B_01_750x750.png" alt="普樂氏USB握冰製冷手提風扇(藍色)"></div>
+        <div class="body">
+          <div class="sku">PHF022400B</div>
+          <h3 class="name">普樂氏USB握冰製冷手提風扇(藍色)</h3>
+          <p class="desc">產品特性： 6擋風速調節，超強風力性能，強大氣流瞬間降溫 半導體握柄製冷系統，手握手柄背面快速降溫，握感如冰 數位LED顯示：即時顯示當前風力檔位與剩餘電量，告別電量焦慮，使用狀況一目了然 DC無刷摩打：運轉細膩靜謐，為您留住清靜涼意 配件包括Type-C充電線1條、掛繩1條、說明書1張 產品規格： 包裝尺寸：7.1cm(W) x 6.9cm(D) x 19.5cm(H) 包裝重量：0.32kg 產品尺寸：5.4cm(W) x 5.9cm(D) x 17.4cm(H) 產品重量：0.24kg 扇葉直徑：4.5cm (1.7&quot;) 輸入電壓：5V 輸入電流：1.8A 電池容量：4000mAh</p>
+          <div class="chips"><span class="chip spec">4000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風/製冷</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PHF022400P/PHF022400P_01_750x750.png" alt="普樂氏USB握冰製冷手提風扇(粉紅)"></div>
+        <div class="body">
+          <div class="sku">PHF022400P</div>
+          <h3 class="name">普樂氏USB握冰製冷手提風扇(粉紅)</h3>
+          <p class="desc">產品特性： 6擋風速調節，超強風力性能，強大氣流瞬間降溫 半導體握柄製冷系統，手握手柄背面快速降溫，握感如冰 數位LED顯示：即時顯示當前風力檔位與剩餘電量，告別電量焦慮，使用狀況一目了然 DC無刷摩打：運轉細膩靜謐，為您留住清靜涼意 配件包括Type-C充電線1條、掛繩1條、說明書1張 產品規格： 包裝尺寸：7.1cm(W) x 6.9cm(D) x 19.5cm(H) 包裝重量：0.32kg 產品尺寸：5.4cm(W) x 5.9cm(D) x 17.4cm(H) 產品重量：0.24kg 扇葉直徑：4.5cm (1.7&quot;) 輸入電壓：5V 輸入電流：1.8A 電池容量：4000mAh</p>
+          <div class="chips"><span class="chip spec">4000mAh</span><span class="chip">供電方式：USB充電(內置電池)/AC插電(220-240V)/DC電源(適配器)</span><span class="chip">扇葉尺寸(吋)：≤6吋</span><span class="chip">電池容量：3001-4000mAh</span><span class="chip">主要功能：普通送風/製冷</span></div>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section id="g2">
+      <h2>座地或立式風扇<span>11 款</span></h2>
+      <div class="grid">
+      <article class="card">
+        <div class="thumb empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 18 5-5 3.5 3.5L17 13l4 5"/></svg><span>暫無圖片</span></div>
+        <div class="body">
+          <div class="sku">PFF351207</div>
+          <h3 class="name">##普樂氏7吋座地循環風扇</h3>
+          
+          <div class="chips"><span class="chip spec">VOLTAGE: AC 220-240V</span><span class="chip spec">FREQUENCY: 50-60Hz</span><span class="chip spec">POWER: 50W</span><span class="chip spec">SIZE: 7&quot;</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：6.1-9吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF351212/PFF351212_2_750x750.png" alt="普樂氏12吋座地循環風扇"></div>
+        <div class="body">
+          <div class="sku">PFF351212</div>
+          <h3 class="name">普樂氏12吋座地循環風扇</h3>
+          <p class="desc">產品特性： 可自動上下左右轉動；可配合暖氣及冷氣機使用，能將暖氣或冷風循環到室內各個角落，致冷氣機及暖風機不需要調校到高段，達到節能效果 3段風速選擇，能滿足你不同的需要 輕觸式顯示屏，更可配合遙控器使用，簡單易用 設有最長12小時定時，預設關機時關，可安心睡眠溫暖一整晚 機背備有手抽設計，方便移動 產品規格： 包裝尺寸：50.5cm(W) x 21.5cm(D) x 37cm(H) 包裝重量：3.3kg 產品尺寸：34cm(W) x 32cm(D) x 89cm(H) 產品重量：2.9kg 扇葉尺寸：12&quot; 電壓：220-240V 功率：45W</p>
+          <div class="chips"><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：9.1-12吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF353114/PFF353114_750x750.png" alt="普樂氏14吋座地風扇 (白色)"></div>
+        <div class="body">
+          <div class="sku">PFF353114</div>
+          <h3 class="name">普樂氏14吋座地風扇 (白色)</h3>
+          <p class="desc">產品特性： 三段風速選擇：1檔(低速)、2檔(中速)、3檔(高速) 5片扇葉，風力強勁 手動上下微調送風，俯仰角度約45度 按鍵式控制，左右送風擺動，令室內空氣流通 可調較高度：約106-130厘米 可拆除組件設計，包括可拆式扇葉和網罩等，方便清洗和收納 產品規格： 包裝尺寸：56.5cm(W) x 13cm(D) x 44.3cm(H) 包裝重量：5.51kg 產品尺寸：45cm(W) x 26cm(D) x 130cm(H) 扇葉直徑：35cm 電線長度：174cm 電壓：220-240V~ 功率：45W</p>
+          <div class="chips"><span class="chip spec">VOLTAGE: 220-240V</span><span class="chip spec">FREQUENCY: 50-60Hz</span><span class="chip spec">POWER: 45W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：12.1-16吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF354008/PFF354008_2_750x750.png" alt="普樂氏座地座檯8吋3D DC循環風扇"></div>
+        <div class="body">
+          <div class="sku">PFF354008</div>
+          <h3 class="name">普樂氏座地座檯8吋3D DC循環風扇</h3>
+          <p class="desc">3D送風，可左右上下向前轉動，達致廣角多角度送風 輕觸式顯示屏，更可配合遙控器使用，簡單易用 機背有提手設計，方便移動 配備高效能直流電機，30W功率用電省電節能及低噪音59dB或以下 多項風類選擇：3個模式（正常、自然、睡眠）可選，再有12段風速可供選擇，配合不同溫度使用 設有最長12小時定時，預設關機時機，可安心睡眠溫暖一整晚 配備立地管，循環風扇可座地或座枱使用 配有安全鎖功能，避免小孩無意接觸開啟或亂按功能鍵，安全放心 座枱尺寸：32.5cm(L) x 63cm(H) 座地尺寸：32.5cm(L) x 91cm(H) 功率：30W</p>
+          <div class="chips"><span class="chip spec">Voltage: 220-240V</span><span class="chip spec">Frequency: 50/60Hz</span><span class="chip spec">Power: 30W</span><span class="chip spec">Fan Size : 22cm ( Fan ) around 8.6 inch</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：6.1-9吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF357016/PFF357016-00_750x750.png" alt="普樂氏16吋易拆式座地風扇"></div>
+        <div class="body">
+          <div class="sku">PFF357016</div>
+          <h3 class="name">普樂氏16吋易拆式座地風扇</h3>
+          <p class="desc">產品特性： 獨特免工具拆卸結構，輕旋機頭即可將整個機頭取下，容易安裝和清洗 三段式風速切換，無論是微風輕拂或強勁勁風，皆能隨心掌握 具備60分鐘定時功能，可自由設定自動關機時間 搭載五片式扇葉設計，切風更細膩，風力強勁 支援自動左右擺頭，全方位廣角送風，盡情享受多視角的涼爽體驗 產品規格： 包裝尺寸：65cm(W) x 19cm(D) x 64.5cm(H) 包裝重量：7.49kg 產品尺寸：46cm(W) x 47cm(D) x 131.5cm(H) 產品重量：5.86kg 扇葉尺寸：16吋 電線長度：175cm 電壓：220-240V~ 功率：66W</p>
+          <div class="chips"><span class="chip spec">fan blade: 29.5cm(11.6inch)</span><span class="chip spec">Product: 355*272*470mm</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：12.1-16吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF358008/PFF358008_2_750x750.png" alt="普樂氏8吋DC座地座檯循環風扇"></div>
+        <div class="body">
+          <div class="sku">PFF358008</div>
+          <h3 class="name">普樂氏8吋DC座地座檯循環風扇</h3>
+          <p class="desc">產品特性： 可調節上下左右同時擺動，配合暖氣及冷氣機使用 有多達24檔風速，能滿足你不同的需要 輕觸式顯示屏，更可配合遙控器使用，簡單易用 設有最長12小時定時，預設關機時關，可安心睡眠一整晚 機背備有手抽設計，方便移動 配備立地管，循環風扇可座地或座枱使用 配備高效能直流電機，30W功率用電省電節能及低噪音50dB(A)或以下 產品規格： 包裝尺寸：54.4cm(L) x 20.2cm(W) x 37.2cm(H) 包裝重量：4kg 產品重量：3.5kg 扇葉尺寸：8&quot; 風扇高度：90cm（座地高度） 面罩直徑：27.4cm 底盤直徑：32.2cm 電壓：220V~ 功率：30W</p>
+          <div class="chips"><span class="chip spec">Voltage: 220V~</span><span class="chip spec">Frequency: 50Hz</span><span class="chip spec">Power: 30W</span><span class="chip spec">Fan Size : 19.8cm ( Fan ) around 8 inches</span><span class="chip spec">Product: 32.5X31.0X84.0CM</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：6.1-9吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF512012/PFF512012.png" alt="普樂氏12吋DC等離子除菌風扇"></div>
+        <div class="body">
+          <div class="sku">PFF512012</div>
+          <h3 class="name">普樂氏12吋DC等離子除菌風扇</h3>
+          
+          <div class="chips"><span class="chip spec">Power : 15W</span><span class="chip spec">Rated Voltage : 12V==</span><span class="chip spec">Rated Input: 12V==2A</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：12.1-16吋</span><span class="chip">主要功能：普通送風/空氣淨化</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF701014/PFF701014_01.png" alt="普樂氏14吋金屬強風座地扇 (電鍍)"></div>
+        <div class="body">
+          <div class="sku">PFF701014</div>
+          <h3 class="name">普樂氏14吋金屬強風座地扇 (電鍍)</h3>
+          <p class="desc">1. 14吋直徑 2. 高、中、低三段風速選擇 3. 精密平衡金屬扇頁設計，特強風力穩定降噪 4. 270 °C仰俯調節配合優質摩打，增強空氣流動 5. 高密度網罩及過熱保護裝置，安全可靠 6. 支架底部防滑橡膠墊，減少震動，降低噪音 7. 電線收納扣設計，整理更方便</p>
+          <div class="chips"><span class="chip spec">Voltage: 220 V - 240 V</span><span class="chip spec">Frequency: 50 Hz</span><span class="chip spec">Power: 70 W</span><span class="chip spec">Size: 14&quot; Floor Fan (Chrome Color)</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：12.1-16吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF701018/PFF701014_PFF701018_01.png" alt="普樂氏18吋金屬強風座地扇 (電鍍)"></div>
+        <div class="body">
+          <div class="sku">PFF701018</div>
+          <h3 class="name">普樂氏18吋金屬強風座地扇 (電鍍)</h3>
+          <p class="desc">1) 精密平衡金屬葉設計，特強風力，穩定安靜 2) 270° 仰俯調節配合電機，增強空氣對流 3) 高、中、低三段風力設計 4) 高密度網罩及過熱保護裝置，安全可靠 5) 支架底部設有防滑橡膠墊，減少震動，降低噪音 6) 電線收納扣設計，整理更方便 7) 18吋 (45厘米) 8) 功率︰100W 小家電產品保修條款 敏寶有限公司(“本公司”)提供一年保修服務(由有效商戶發票上的取貨日期起計算)，保修期以後，客戶須按照維修部之修理報價支付一切費用。 (一)客戶應按照產品使用說明書之指引使用產品，本公司對於任何因產品不適當使用或任何產品之故障，損壞或停頓而引致任何人士或財產上直接或間接損失及破壞，概不負責。 (二)客戶不可擅自刪改產品型號，機身編號或商戶發票內容。如發現者本公司將不向客戶提供保修服務。 (三)由於人為損壞、錯誤使用，疏忽，擅自修理 / 改裝或產品用於非產品原本設計之用途，保修服務恕不提供。 (四)本公司提供之保修服務不包括產品表面、機身、損耗性零件及配件。 (五)客戶需自行將產品送往本公司之維修部，並於修妥後，於同一地點取回。經更換後之任何損壞零件，將歸本公司所有。 (六)所有交到維修部之物品，在本公司發出通知取回後30天內仍不領回，本公司將有權作出處理，由此所引致之任何損失，本公司概不負責。 (七)保修條款如有任何更改，恕不另行通知。如有任何爭議，本公司保留最終決定權。</p>
+          <div class="chips"><span class="chip spec">Voltage: 220 V - 240 V</span><span class="chip spec">Frequency: 50 Hz</span><span class="chip spec">Power: 100 W</span><span class="chip spec">Size: 18&quot; Floor Fan (Chrome Color)</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：16.1-18吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF702009/PFF702009_750x750.png" alt="普樂氏9吋金屬強風座地扇 (黑古銅)"></div>
+        <div class="body">
+          <div class="sku">PFF702009</div>
+          <h3 class="name">普樂氏9吋金屬強風座地扇 (黑古銅)</h3>
+          <p class="desc">產品特性： 110°俯角擺動設計能大範圍帶動氣流，顯著提升室內空氣對流效率 空氣循環功能，有效匯聚風量，營造清爽舒適的室內氣候 精度平衡金屬扇葉，在輸出強勁風力的同時，保持運轉穩固並降噪 提供高、中、低三檔風感選擇，精準滿足不同場景的使用需求 高密度網罩及過熱保護裝置，安全可靠 底部配備防滑橡膠墊，能有效吸收細微震動，讓運行更安靜 設有專屬電線收納扣，讓線材井然有序 產品規格： 包裝尺寸：33.2cm(W) x 17.8cm(D) x 32.1cm(H) 包裝重量：2.6kg 產品尺寸：32.8cm(W) x 15.5cm(D) x 30.7cm(H) 產品重量：2.21kg 扇葉尺寸：22cm (9&quot;) 電線長度：166cm 電壓：220-240V~ 功率：40W</p>
+          <div class="chips"><span class="chip spec">Voltage: 220 V - 240 V</span><span class="chip spec">Frequency: 50 Hz</span><span class="chip spec">Power: 40 W</span><span class="chip spec">Size: 9&quot; Floor Fan (Black Brass Color)</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：6.1-9吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF702014/PFF702014_01_750x750.png" alt="普樂氏14吋金屬強風座地扇 (黑古銅)"></div>
+        <div class="body">
+          <div class="sku">PFF702014</div>
+          <h3 class="name">普樂氏14吋金屬強風座地扇 (黑古銅)</h3>
+          <p class="desc">產品特性： 75°左右自動擺頭，帶動全室氣流循環 精密平衡金屬扇葉，風力強勁且運轉平穩安靜 高、中、低三檔風速，滿足不同體感需求 高密度網罩及過熱保護裝置，安全可靠 底部防滑橡膠墊有效吸收震動，減少震動，降低噪音 可調較高度由81至105厘米，適配多樣空間場景 產品規格： 包裝尺寸：41.3cm(W) x 16.4cm(D) x 53.5cm(H) 包裝重量：6.63kg 產品尺寸：39cm(W) x 33cm(D) x 105cm(H) 產品重量：5.72kg 電線長度：170cm 扇葉直徑：35cm / 14&quot; 電壓：220-240V 功率：50W</p>
+          <div class="chips"><span class="chip spec">Voltage: 220 V - 240 V</span><span class="chip spec">Frequency: 50 Hz / 60 Hz</span><span class="chip spec">Power: 50 W</span><span class="chip spec">Size: 14&quot; Floor Fan (Black Brass Color)</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：12.1-16吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section id="g3">
+      <h2>無葉風扇<span>5 款</span></h2>
+      <div class="grid">
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTT050090/PTT050090_2_750x750.png" alt="普樂氏座地無葉風扇"></div>
+        <div class="body">
+          <div class="sku">PTT050090</div>
+          <h3 class="name">普樂氏座地無葉風扇</h3>
+          <p class="desc">產品特性： 3段風速選擇：低、中、高 70°左右自動搖擺送風功能，迅速令室内空氣流通/li&amp;gt; 旋鈕式控制，簡單易用 無扇葉設計，安全時尚 產品規格： 包裝尺寸：29cm(W) x 28cm(D) x 90.5cm(H) 包裝重量：4.08kg 產品尺寸：24.5cm(W) x 24.5cm(D) x 85cm(H) 產品重量：3.25kg 風扇轉速：1800rpm 送風速度：4.3m/s 送風範圍：3m 電壓：220-240V~ 功率：50W</p>
+          <div class="chips"><span class="chip spec">Voltage: 220-240V, Power 50W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTT050097/PTT050097_02_750x750.png" alt="普樂氏空氣淨化座地無葉風扇 (銀色)"></div>
+        <div class="body">
+          <div class="sku">PTT050097</div>
+          <h3 class="name">普樂氏空氣淨化座地無葉風扇 (銀色)</h3>
+          <p class="desc">產品特性： 3段風速度設計：低、中、高 2小時定時選擇 左右自動搖擺送風功能，迅速令室內空氣流通 活性炭過濾網，能有效淨化空氣 無扇葉設計，安全時尚 產品規格： 包裝尺寸：29.5cm(W) x 28.6cm(D) x 102.3cm(H) 包裝重量：5.2kg 產品尺寸：24cm(W) x 24cm(D) x 96.6cm(H) 產品重量：3.7kg 電線長度：160cm 電壓：220-240V~ 功率：80W</p>
+          <div class="chips"><span class="chip spec">VOLTAGE: 220-240V</span><span class="chip spec">FREQUENCY: 50-60Hz</span><span class="chip spec">POWER: 80W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">主要功能：普通送風/空氣淨化</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTT050106/PTT050106_01_750x750.png" alt="普樂氏空氣淨化座地無葉風扇"></div>
+        <div class="body">
+          <div class="sku">PTT050106</div>
+          <h3 class="name">普樂氏空氣淨化座地無葉風扇</h3>
+          <p class="desc">產品特性： 12段風速，讓你可以依照個人需求調整風力大小 負離子模式：可透過釋放負離子來淨化空氣 自然風模式：模擬自然風的吹拂方式，風力時大時小，提供更柔和和舒適的送風體驗 約40°左右自動搖擺送風功能，迅速令室內空氣流通 機身左右配有H8 HEPA濾網，能有效過濾約0.3微米的顆粒，能有效淨化空氣 12小時定時功能，設定時以1小時為單位遞增 輕觸式LCD顯示屏，更可配合遙控器使用，簡單易用 DC馬達，低噪音，讓你覺得寧靜舒適 產品規格： 包裝尺寸：35cm(W) x 33cm(D) x 113cm(H) 包裝重量：7.34kg 產品尺寸：29.7cm(W) x 27.5cm(D) x 106.4cm(H) 產品重量：5.24kg 電線長度：150cm 遙控器電池類型：AAA（產品不包括電池） 電壓：220-240V~ 功率：30W</p>
+          <div class="chips"><span class="chip spec">Voltage: 220-240V, Power 30W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">主要功能：普通送風/空氣淨化</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 18 5-5 3.5 3.5L17 13l4 5"/></svg><span>暫無圖片</span></div>
+        <div class="body">
+          <div class="sku">PTT050145W</div>
+          <h3 class="name">普樂氏無葉循環風扇-白色</h3>
+          
+          <div class="chips"><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PTT070104/PTT070104_2_750x750.png" alt="普樂氏智能水冷無葉風扇"></div>
+        <div class="body">
+          <div class="sku">PTT070104</div>
+          <h3 class="name">普樂氏智能水冷無葉風扇</h3>
+          <p class="desc">產品特性： 12段風力選擇，讓你能對應不同天氣和環境作出使用 12小時定時選擇，定時器可以1小時為單位作調節 負離子模式：負離子能與空氣中污染物如香煙煙霧、甲醛、細菌等結合並下沉落地，達到淨化室內空氣效果 冰涼冷風功能：讓風扇吹出冰涼的冷濕空氣，亦可配搭附贈的冰晶盒一同使用，達到更佳的降溫效果 70°左右自動搖擺送風功能，迅速令室内空氣流通能選擇 風扇上部有LED夜燈，時尚美觀 無扇葉設計，使用更安全 配備遙控器 產品規格： 包裝尺寸：28.5cm(W) x 27.5cm(D) x 114.5cm(H) 包裝重量：5.73kg 產品尺寸：25cm(W) x 25cm(D) x 110cm(H) 產品重量：3.37kg 風扇轉速：1680rpm 送風速度：4.5m/s 送風範圍：4m 電壓：220-240V~ 功率：35W</p>
+          <div class="chips"><span class="chip spec">Voltage: 220-240V, Power 50W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">主要功能：普通送風/冷風</span></div>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section id="g4">
+      <h2>掛牆風扇<span>4 款</span></h2>
+      <div class="grid">
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PWF502007/PWF502007.png" alt="普樂氏7吋掛牆循環風扇"></div>
+        <div class="body">
+          <div class="sku">PWF502007</div>
+          <h3 class="name">普樂氏7吋掛牆循環風扇</h3>
+          <p class="desc">產品特性： 3段風速設計：低、中、高 拉掣式操作，可使風扇左右搖擺，令室內空氣流通 手動上下調較方向，方便控制 可將香薰油滴於油墊上，香氣隨風飄散 產品規格： 包裝尺寸：36cm(W) x 29cm(D) x 37cm(H) 包裝重量：2.95kg 產品尺寸：25.5cm(W) x 33cm(D) x 34cm(H) 產品重量：2.15kg 扇葉尺寸：19cm / 7&quot; 電線長度：148cm 電壓：220-240V~ 功率：50W</p>
+          <div class="chips"><span class="chip spec">VOLTAGE: AC 220-240V</span><span class="chip spec">FREQUENCY: 50-60Hz</span><span class="chip spec">POWER: 50W BLADE SIZE: 7&quot;</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：6.1-9吋</span><span class="chip">主要功能：循環對流</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PWF505012/PWF505012-00_750x750.png" alt="普樂氏12吋易拆式遙控掛牆風扇"></div>
+        <div class="body">
+          <div class="sku">PWF505012</div>
+          <h3 class="name">普樂氏12吋易拆式遙控掛牆風扇</h3>
+          <p class="desc">產品特性： 獨特易拆設計，只需旋轉機頭，整個機頭便可取下，不需額外工具，用家可極方便清洗及安裝 3種風類模式：正常風、自然風、睡眠風，適合不同溫度環境使用 3個級別風速：高、中、低，多樣化風種隨你選擇 觸控式操作，更可配合遙控器使用，簡單易用 五塊扇葉，風力強勁 設有特長7.5小時定時，預設關機時間，可安心睡眠 按下搖擺風鍵，風扇可自動左右搖擺，可享受多角度涼風 產品規格： 包裝尺寸：43cm(W) x 25.5cm(D) x 38cm(H) 包裝重量：3.77kg 產品尺寸：35cm(W) x 33cm(D) x 46cm(H) 產品重量：2.77kg 扇葉尺寸：12&quot; 電線長度：160cm 電壓：220-240V~ 功率：57W</p>
+          <div class="chips"><span class="chip spec">fan blade: 29.5cm(11.6inch)</span><span class="chip spec">Product: 355*272*470mm</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：9.1-12吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PWF505014/PWF505014-00_750x750.png" alt="普樂氏14吋易拆式遙控掛牆風扇"></div>
+        <div class="body">
+          <div class="sku">PWF505014</div>
+          <h3 class="name">普樂氏14吋易拆式遙控掛牆風扇</h3>
+          <p class="desc">產品特性： 獨特易拆設計，只需旋轉機頭，整個機頭便可取下，不需額外工具，用家可極方便清洗及安裝 3種風類模式：正常風、自然風、睡眠風，適合不同溫度環境使用 3個級別風速：高、中、低，多樣化風種隨你選擇 觸控式操作，更可配合遙控器使用，簡單易用 五塊扇葉，風力強勁 設有特長7.5小時定時，預設關機時間，可安心睡眠 按下搖擺風鍵，風扇可自動左右搖擺，可享受多角度涼風 產品規格： 包裝尺寸：43cm(W) x 28cm(D) x 44cm(H) 包裝重量：4.26kg 產品尺寸：40.5cm(W) x 35cm(D) x 50.5cm(H) 產品重量：3.2kg 扇葉尺寸：14&quot; 電線長度：160cm 電壓：220-240V~ 功率：57W</p>
+          <div class="chips"><span class="chip spec">fan blade: 29.5cm(11.6inch)</span><span class="chip spec">Product: 355*272*470mm</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：12.1-16吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 18 5-5 3.5 3.5L17 13l4 5"/></svg><span>暫無圖片</span></div>
+        <div class="body">
+          <div class="sku">PWF506012</div>
+          <h3 class="name">普樂氏12吋遙控掛牆風扇</h3>
+          
+          <div class="chips"><span class="chip spec">motor: 66*12mm/ copper winding</span><span class="chip spec">fan blade: 29.5cm(11.6inch)</span><span class="chip spec">Product: 355*272*470mm</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：9.1-12吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section id="g5">
+      <h2>冷風機<span>3 款</span></h2>
+      <div class="grid">
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PMF004005/PMF004005_750x750_Logo.png" alt="普樂氏高效能負離子冷風機"></div>
+        <div class="body">
+          <div class="sku">PMF004005</div>
+          <h3 class="name">普樂氏高效能負離子冷風機</h3>
+          <p class="desc">產品特性/功能： 4段風速選擇：低、中、高、強，風量大且噪音低 15小時定時選擇 設有負離子風選擇 左右自動搖擺送風 設有頂部水箱設計，配合機身底部水箱，加水更方便 備有缺水提示聲響 配備遙控器，方便易用 四種模式： 正常模式：按風速鍵設定的強、高、中、低四種風速 自然模式：冷風機按預編程式類比自然風，送出的風使人感到清新、自然 睡眠模式：冷風機按預編程式類比送風，送出低檔輕柔的風 負離子：在機身操作面板按開機後，已預設自動啟動內置的負離子產生器開始工作，釋放負離子，有相對應的指示燈顯示，或可用遙控器單獨關閉或啟動負離子功能 產品規格： 電壓：220-240V~ 功率：65W 包裝尺寸：42cm(L) x 37cm(W) x 88cm(H) 包裝重量：8.7kg</p>
+          <div class="chips"><span class="chip spec">220-240V ,50-60Hz, 65W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">主要功能：普通送風/冷風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PMF005003/PMF005003_00_750x750.png" alt="普樂氏冷風機-8L"></div>
+        <div class="body">
+          <div class="sku">PMF005003</div>
+          <h3 class="name">普樂氏冷風機-8L</h3>
+          <p class="desc">產品特性： 提供三段風速調節，配合獨立冰風模式，客製化您的專屬涼意 冷風降溫原理：將冷水或冰凍的冰種放入機內，水泵將從水箱中抽取水並將其倒入蜂窩狀降温水簾紙上，再由轉動的風輪把水簾紙周圍具有一定濕度的冷空氣吹出，吹來的涼風降低了溫度，產生令人放鬆的冷卻效果 獨特的分離式結構，僅需輕啟彈簧扣，水箱與機身便能靈巧拆卸 橫向扇葉可左右自動擺動，縱向扇葉則可依需求手動上下調校，提供廣角送風功能 8公升大容量水箱搭配兩個冰種，為您支撐整晚的持續清涼 靈活移動，配備底部萬向輪與側邊隱形提手，客廳、臥室或書房隨處可用 產品規格： 包裝尺寸：32.4cm(W) x 30cm(D) x 46.4cm(H) 包裝重量：5.1kg 產品尺寸：27.2cm(W) x 26cm(D) x 58.5cm(H) 產品重量：4.2kg 電線長度：140cm 電壓：220-240V~ 功率：60W</p>
+          <div class="chips"><span class="chip spec">1.-Air flow Volume: 270 m3/h</span><span class="chip spec">2.-Water Tank Capacity: 8.0L</span><span class="chip spec">4.-Noise test: &lt;=65dB</span><span class="chip spec">5.-Voltage: 220-240V</span><span class="chip spec">6.-Frequency: 50Hz</span><span class="chip spec">7.-Cooling power: 80W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">主要功能：普通送風/冷風</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PMF005004/PMF005004_00_750x750.png" alt="普樂氏負離子遙控冷風機-20L"></div>
+        <div class="body">
+          <div class="sku">PMF005004</div>
+          <h3 class="name">普樂氏負離子遙控冷風機-20L</h3>
+          <p class="desc">產品特性： 提供三段風速調節，配合獨立冰風模式，客製化您的專屬涼意 冷風降溫原理：將冷水或冰凍的冰種放入機內，水泵將從水箱中抽取水並將其倒入蜂窩狀降温水簾紙上，再由轉動的風輪把水簾紙周圍具有一定濕度的冷空氣吹出，吹來的涼風降低了溫度，產生令人放鬆的冷卻效果 獨特的分離式結構，僅需輕啟彈簧扣，水箱與機身便能靈巧拆卸 橫向扇葉可左右自動擺動，縱向扇葉則可依需求手動上下調校，提供廣角送風功能 特大20公升大容量水箱搭配兩個冰種盒，為您支撐整晚的持續清涼 靈活移動，配備底部萬向輪與側邊隱形提手，客廳、臥室或書房隨處可用 支援輕觸式顯示屏和遙控器操控，全方位滿足您的使用需求 配備12小時定時關機功能，隨心預設運轉時間，提升睡眠舒適度與節能表現 產品規格： 包裝尺寸：40.4cm(W) x 36cm(D) x 63.3cm(H) 包裝重量：7.65kg 產品尺寸：38.3cm(W) x 30cm(D) x 86cm(H) 產品重量：6.25kg 電線長度：140cm 電壓：220-240V~ 功率：80W</p>
+          <div class="chips"><span class="chip spec">1.-Air flow Volume: 270 m3/h</span><span class="chip spec">2.-Water Tank Capacity: 8.0L</span><span class="chip spec">4.-Noise test: &lt;=65dB</span><span class="chip spec">5.-Voltage: 220-240V</span><span class="chip spec">6.-Frequency: 50Hz</span><span class="chip spec">7.-Cooling power: 80W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">主要功能：普通送風/冷風</span></div>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section id="g6">
+      <h2>座檯或座地兩用風扇<span>1 款</span></h2>
+      <div class="grid">
+      <article class="card">
+        <div class="thumb"><img loading="lazy" src="https://filedn.com/l464RSHPdPppm2sDkdAP0QB/Home%20product%20images/PFF350012/PFF350012_2_750x750.png" alt="普樂氏12吋2合1遙控風扇 (座檯式及座地式)"></div>
+        <div class="body">
+          <div class="sku">PFF350012</div>
+          <h3 class="name">普樂氏12吋2合1遙控風扇 (座檯式及座地式)</h3>
+          <p class="desc">雙層扇葉，出風更輕柔自然 座枱座地兩用，分段機身使用 手動上下調較方向，方便控制 左右自動搖擺送風功能，迅速令室內空氣流通 3段風速設計：低、中、高 約7小時定時選擇 配備無線遙控器，方便遠距離操作 扇葉直徑：約30cm 電壓：220-240V~ 功率：60W</p>
+          <div class="chips"><span class="chip spec">VOLTAGE: 220-240V,</span><span class="chip spec">FREQUENCY: 50-60Hz,</span><span class="chip spec">POWER: 60W</span><span class="chip">供電方式：AC插電(220-240V)</span><span class="chip">扇葉尺寸(吋)：9.1-12吋</span><span class="chip">主要功能：普通送風</span></div>
+        </div>
+      </article>
+      </div>
+    </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand">PROLUXURY</span>
+    <p>本目錄僅供 B2B 參考，產品規格如有更改，恕不另行通知。</p>
+    <p>價格及最低訂購量（MOQ）請聯絡我們的銷售團隊。</p>
+  </div>
+</footer>
+
+<button id="top-btn" aria-label="回到頂部">↑</button>
+<script>
+  const btn = document.getElementById('top-btn');
+  addEventListener('scroll', () => btn.classList.toggle('show', scrollY > 500), { passive: true });
+  btn.onclick = () => scrollTo({ top: 0, behavior: 'smooth' });
+  const links = [...document.querySelectorAll('.toc a')];
+  const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) {
+      links.forEach(l => l.classList.toggle('on', l.getAttribute('href') === '#' + e.target.id));
+    }});
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  secs.forEach(s => s && io.observe(s));
+</script>
+</body>
+</html>

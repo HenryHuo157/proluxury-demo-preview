@@ -17,14 +17,54 @@ function getSessionId() {
   }
 }
 
-/** 基本富文本：先轉義 HTML，再支援 **粗體**、### 標題、- 列表與換行 */
+/** 清除 LLM 洩漏到文字流的工具呼叫標記(含串流中未關閉的區塊) */
+function stripToolCalls(text) {
+  let out = text.replace(/<tool_call>[\s\S]*?<\/tool_call>/g, '')
+  const open = out.indexOf('<tool_call>')
+  if (open !== -1) out = out.slice(0, open)
+  return out.replace(/<\/?(function|parameter|tool_call)[^>]*>/g, '')
+}
+
+/** Markdown 表格轉 HTML */
+function mdTableToHtml(lines, inline) {
+  const rows = lines
+    .map((l) => l.replace(/^\||\|$/g, '').split('|').map((c) => c.trim()))
+    .filter((r) => !r.every((c) => c === '' || /^:?-{2,}:?$/.test(c)))
+  if (!rows.length) return ''
+  const [head, ...rest] = rows
+  const th = '<tr>' + head.map((c) => '<th>' + inline(c) + '</th>').join('') + '</tr>'
+  const trs = rest
+    .map((r) => '<tr>' + r.map((c) => '<td>' + inline(c) + '</td>').join('') + '</tr>')
+    .join('')
+  return '<div class="vt-wrap"><table><thead>' + th + '</thead><tbody>' + trs + '</tbody></table></div>'
+}
+
+/** 基本富文本:先轉義 HTML,再支援 **粗體**、### 標題、- 列表、表格與換行 */
 function renderRich(raw) {
   const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   const inline = (s) => esc(s).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+  const src = stripToolCalls(raw || '')
   const out = []
   let inList = false
-  for (const line of raw.split(/\r?\n/)) {
+  let tableLines = null
+  const flushTable = () => {
+    if (tableLines) {
+      out.push(mdTableToHtml(tableLines, inline))
+      tableLines = null
+    }
+  }
+  for (const line of src.split(/\r?\n/)) {
     const t = line.trim()
+    if (t.startsWith('|')) {
+      if (inList) {
+        out.push('</ul>')
+        inList = false
+      }
+      if (!tableLines) tableLines = []
+      tableLines.push(t)
+      continue
+    }
+    flushTable()
     const li = t.match(/^[-*•]\s+(.*)$/)
     const ol = t.match(/^\d+[.、)]\s+(.*)$/)
     if (li || ol) {
@@ -40,6 +80,10 @@ function renderRich(raw) {
       inList = false
     }
     if (!t) continue
+    if (/^-{3,}$/.test(t)) {
+      out.push('<hr>')
+      continue
+    }
     const h = t.match(/^#{1,6}\s+(.*)$/)
     if (h) {
       out.push('<strong class="vh">' + inline(h[1]) + '</strong>')
@@ -47,6 +91,7 @@ function renderRich(raw) {
     }
     out.push('<p>' + inline(t) + '</p>')
   }
+  flushTable()
   if (inList) out.push('</ul>')
   return out.join('')
 }
@@ -80,10 +125,13 @@ export default function VictorChat() {
     }
   }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // 新訊息時自動捲到底部
+  // 新訊息時自動捲到底部(僅在使用者已貼近底部時,避免打斷往上回看)
   useEffect(() => {
     const el = listRef.current
-    if (el) el.scrollTop = el.scrollHeight
+    if (el) {
+      const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 90
+      if (nearBottom) el.scrollTop = el.scrollHeight
+    }
   }, [messages, busy, open])
 
   // Esc 關閉
@@ -96,28 +144,89 @@ export default function VictorChat() {
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
+  /** 更新串流中的最後一則 bot 訊息 */
+  const updateStreamText = (full) => {
+    setMessages((m) => {
+      if (!m.length || m[m.length - 1].role !== 'bot') return m
+      const copy = [...m]
+      copy[copy.length - 1] = { ...copy[copy.length - 1], text: full }
+      return copy
+    })
+  }
+
+  const finishStream = (patch) => {
+    setMessages((m) => {
+      if (!m.length || m[m.length - 1].role !== 'bot') return m
+      const copy = [...m]
+      copy[copy.length - 1] = { ...copy[copy.length - 1], streaming: false, ...patch }
+      return copy
+    })
+  }
+
   async function send(text) {
     const msg = (text ?? input).trim()
     if (!msg || busy) return
     if (!sessionRef.current) sessionRef.current = getSessionId()
     setInput('')
-    setMessages((m) => [...m, { role: 'user', text: msg }])
+    setMessages((m) => [...m, { role: 'user', text: msg }, { role: 'bot', text: '', streaming: true }])
     setBusy(true)
+    let acc = ''
     try {
       const res = await fetch(WEBHOOK_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
         body: JSON.stringify({ message: msg, sessionId: sessionRef.current }),
       })
       if (!res.ok) throw new Error('HTTP ' + res.status)
-      const data = await res.json().catch(() => null)
-      let out = ''
-      if (data && typeof data.output === 'string') out = data.output
-      else if (data && Array.isArray(data.output)) out = data.output.map((o) => o?.text ?? '').join('')
-      if (!out) throw new Error('empty output')
-      setMessages((m) => [...m, { role: 'bot', text: out }])
-    } catch {
-      setMessages((m) => [...m, { role: 'bot', text: t.victorError, error: true }])
+
+      // n8n 串流回應為 NDJSON:begin → keepalive* → item* → end
+      if (res.body) {
+        const reader = res.body.getReader()
+        const decoder = new TextDecoder()
+        let buf = ''
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          buf += decoder.decode(value, { stream: true })
+          const lines = buf.split('\n')
+          buf = lines.pop() // 保留未完成的行
+          for (const line of lines) {
+            const s = line.trim()
+            if (!s) continue
+            let ev
+            try {
+              ev = JSON.parse(s)
+            } catch {
+              continue
+            }
+            if (ev.type === 'item' && typeof ev.content === 'string') {
+              acc += ev.content
+              updateStreamText(acc)
+            } else if (typeof ev.output === 'string' && !ev.type) {
+              // 後端若以單一 JSON 回覆(非串流),直接當成完整文字
+              acc = ev.output
+              updateStreamText(acc)
+            }
+          }
+        }
+      } else {
+        // 舊瀏覽器無 ReadableStream:退回一次性 JSON
+        const data = await res.json().catch(() => null)
+        if (data && typeof data.output === 'string') {
+          acc = data.output
+          updateStreamText(acc)
+        }
+      }
+
+      if (!stripToolCalls(acc).trim()) throw new Error('empty stream')
+      finishStream({})
+    } catch (err) {
+      if (stripToolCalls(acc).trim()) {
+        // 串流中斷但已有部分內容:保留已收到的文字
+        finishStream({})
+      } else {
+        finishStream({ text: t.victorError, error: true })
+      }
     } finally {
       setBusy(false)
     }
@@ -163,20 +272,22 @@ export default function VictorChat() {
 
         <div className="victor-body" ref={listRef}>
           {messages.map((m, i) => (
-            <div key={i} className={`victor-msg ${m.role === 'user' ? 'user' : 'bot'}`}>
-              <div
-                className="victor-bubble"
-                dangerouslySetInnerHTML={{ __html: renderRich(m.text) }}
-              />
+            <div
+              key={i}
+              className={`victor-msg ${m.role === 'user' ? 'user' : 'bot'}${m.streaming ? ' streaming' : ''}`}
+            >
+              {m.role === 'bot' && m.streaming && !stripToolCalls(m.text).trim() ? (
+                <div className="victor-bubble victor-typing" aria-label={t.victorThinking}>
+                  <i /><i /><i />
+                </div>
+              ) : (
+                <div
+                  className="victor-bubble"
+                  dangerouslySetInnerHTML={{ __html: renderRich(m.text) }}
+                />
+              )}
             </div>
           ))}
-          {busy && (
-            <div className="victor-msg bot">
-              <div className="victor-bubble victor-typing" aria-label={t.victorThinking}>
-                <i /><i /><i />
-              </div>
-            </div>
-          )}
           {showChips && (
             <div className="victor-chips">
               {t.victorQuick.map((q) => (

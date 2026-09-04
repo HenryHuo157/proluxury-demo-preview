@@ -1252,6 +1252,34 @@ h1, h2, h3, h4, p { margin: 0; }
 .victor-bubble ul { list-style: disc; padding-left: 1.35em; margin: 4px 0 8px; }
 .victor-bubble ul:last-child { margin-bottom: 0; }
 .victor-bubble li { margin: 3px 0; }
+.victor-bubble hr { border: none; border-top: 1px solid var(--c-line); margin: 10px 0; }
+.victor-bubble .vt-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 6px 0 10px;
+}
+.victor-bubble .vt-wrap:last-child { margin-bottom: 0; }
+.victor-bubble table {
+  width: 100%;
+  min-width: 260px;
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.victor-bubble th,
+.victor-bubble td {
+  border: 1px solid var(--c-line);
+  padding: 5px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+.victor-bubble th {
+  background: var(--c-bg-soft);
+  color: var(--c-primary);
+  font-weight: 600;
+}
+.victor-bubble tbody tr:nth-child(even) td { background: #fafbfc; }
 @keyframes victorRise {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1271,6 +1299,22 @@ h1, h2, h3, h4, p { margin: 0; }
 @keyframes victorBlink {
   0%, 80%, 100% { transform: scale(0.75); opacity: 0.45; }
   40% { transform: scale(1.1); opacity: 1; }
+}
+
+/* 串流中的游標 */
+.victor-msg.bot.streaming .victor-bubble > :last-child::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  background: var(--c-accent);
+  margin-left: 3px;
+  vertical-align: -0.12em;
+  animation: victorCaret 0.9s steps(1) infinite;
+}
+@keyframes victorCaret {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0; }
 }
 
 /* 建議問題 */
